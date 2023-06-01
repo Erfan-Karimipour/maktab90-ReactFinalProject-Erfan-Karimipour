@@ -1,10 +1,14 @@
 import React from 'react'
 import { Header } from './Components/Header'
+import { Main } from './Components/Main'
+import { Footer } from './Components/Footer'
 
 export const HomaPage = () => {
   return (
-    <div>
+    <>
       <Header />
-    </div>
+      <Main   />
+      <Footer />
+    </>
   )
 }
