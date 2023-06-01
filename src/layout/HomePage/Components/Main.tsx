@@ -6,11 +6,11 @@ import { ProductSection } from './MainComponents/productSection'
 
 export const Main = () => {
   return (
-    <>
+    <div>
       <Categories     />
       <SliderSection  />
       <ProductSection />
-    </>
+    </div>
   )
   
 
