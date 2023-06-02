@@ -17,7 +17,7 @@ export const SliderSection = () => {
     };
 
     return (
-      <div className='cursor-pointer border-y border-y-gray-500 overflow-hidden h-[24rem]'>
+      <div className='cursor-pointer border-y border-y-gray-500 overflow-hidden'>
         <Slider {...settings}>
           <div>
             <img src={Image1} />

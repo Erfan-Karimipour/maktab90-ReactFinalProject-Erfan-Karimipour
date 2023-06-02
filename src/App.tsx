@@ -9,7 +9,8 @@ import { PaymentPage } from './layout/PaymentPage/PaymentPage'
 import { AdminLogin } from './layout/AdminLoginPage/AdminLogin'
 import { AdminPage } from './layout/AdminPage/AdminPage'
 import { Login } from './layout/Login/Login'
-import { Providers } from './assets/Context/Context'
+import { Providers } from './Context/Context'
+import { NotFound404 } from './layout/404/NotFound404'
 
 function App() {
 
@@ -27,8 +28,8 @@ function App() {
           <Route path='/Login'          Component={Login}             />
           <Route path='/AdminLogin'     Component={AdminLogin}        />
           <Route path='/Admin'          Component={AdminPage}         />
+          <Route path='*'               Component={NotFound404}       />
         </Routes>
-
       </BrowserRouter>
     </Providers>
   )

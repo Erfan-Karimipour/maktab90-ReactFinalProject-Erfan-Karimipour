@@ -1,11 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react'
 import axios from 'axios'
-import { useData } from '../../../../assets/Context/Context'
+import { useData } from '../../../../Context/Context'
 
 export const Categories = () => {
   
   let {categories, setCategories, subCategories, setSubCategories} = useData();
-  console.log(categories);
   
   return (
     <div className='mt-20 flex mx-[20%] flex-col'>
