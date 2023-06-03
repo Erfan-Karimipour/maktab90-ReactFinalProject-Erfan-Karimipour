@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap');
+@font-face {
+  font-family: 'Vazir';
+  src: url('./assets/Fonts/Vazir.ttf') format('truetype');
+}
 
-* {
-  margin: 0;
-  font-family: 'Vazirmatn', sans-serif;
+body {
+  font-family: 'Vazir', sans-serif;
 }
