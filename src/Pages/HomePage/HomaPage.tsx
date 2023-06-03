@@ -1,7 +1,8 @@
 import React from 'react'
-import { Header } from './Components/Header'
+import { Header } from '../../Layout/Header'
 import { Main } from './Components/Main'
-import { Footer } from './Components/Footer'
+import { Footer } from '../../Layout/Footer'
+
 
 export const HomaPage = () => {
   return (
