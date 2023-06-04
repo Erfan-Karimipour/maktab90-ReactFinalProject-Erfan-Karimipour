@@ -10,7 +10,8 @@ export const AdminLogin = () => {
           <div className='grid grid-cols-2'>
           <div className='flex flex-col w-5/6 self-center m-auto'>
             <LoginInputs />
-            <button type='submit' className='bg-red-500 text-white text-2xl font-bold rounded-md py-2'>ورود</button>
+            <button type='submit' className='bg-red-500 text-white text-2xl font-bold rounded-md py-2 hover:bg-red-600 duration-100'>ورود</button>
+            <Link to={'/'} className='text-sm text-blue-700 self-start mt-1'>بازگشت به صفحه اصلی</Link>
           </div>
           <img src={LockAndKey} alt="Lock and key" width={300} className='mx-20 my-5'/>
         </div>
