@@ -26,9 +26,8 @@ export const LoginInputs = () => {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        
-      <TextField variant="outlined" label="User Name" type="text"     fullWidth style={textFieldStyles}/>
-      <TextField variant="outlined" label="Password"  type="Password" fullWidth style={textFieldStyles}/>
+        <TextField variant="outlined" label="User Name" type="text"     fullWidth style={textFieldStyles}/>
+        <TextField variant="outlined" label="Password"  type="Password" fullWidth style={textFieldStyles}/>
       </ThemeProvider>
     </div>
   )

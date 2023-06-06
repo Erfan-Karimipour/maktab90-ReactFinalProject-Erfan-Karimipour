@@ -7,12 +7,8 @@ export const ProductSection = (cat) => {
   if (!cat) cat = "any";
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/products`).then((res) => {
-        // console.log(res.data.data.products);
-        
+    axios.get(`http://localhost:8000/api/products`).then((res) => { 
         setProducts(res.data.data.products);
-        console.log(products);
-        
     })
   },[])
 
