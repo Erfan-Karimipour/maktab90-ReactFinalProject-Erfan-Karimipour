@@ -8,8 +8,8 @@ import { RadioInputs } from './OrdersTabComponents/RadioInputs';
 
 export function OrdersTab() {
 
-  let [showCompleted, setShowCompleted] = useState(true)
-
+  let [showCompleted, setShowCompleted] = useState('all')
+  
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
     pageSize: 10,
@@ -18,13 +18,21 @@ export function OrdersTab() {
   const [rows, setRows] = React.useState([]);
   const [rowCount, setRowCount] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
-
+  
   const getRowId = (row) => row._id;
-
+  
   React.useEffect(() => {
+    let x = '';
     setLoading(true);
+
+    if (showCompleted == 'all'){
+      x = `http://localhost:8000/api/orders?page=${paginationModel.page+1}`;
+    } else {
+      x = `http://localhost:8000/api/orders?page=${paginationModel.page+1}&deliveryStatus=${showCompleted}`
+    }
+
     axios
-      .get(`http://localhost:8000/api/orders?page=${paginationModel.page+1}&deliveryStatus=${showCompleted}`)
+      .get(x)
       .then((res) => {
         const products = res.data.data.orders;
         const total = res.data.total;
