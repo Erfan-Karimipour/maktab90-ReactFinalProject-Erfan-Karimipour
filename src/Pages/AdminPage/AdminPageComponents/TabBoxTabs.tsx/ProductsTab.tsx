@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { Button, IconButton, ThemeProvider, createTheme } from '@mui/material';
@@ -29,10 +29,8 @@ export function ProductsTab() {
     axios
       .get(`http://localhost:8000/api/products?page=${paginationModel.page+1}`)
       .then((res) => {
-        console.log(res);
         const products = res.data.data.products;
         const total = res.data.total;
-        console.log(total);
         
         setRows(products);
         setRowCount(total);
@@ -56,8 +54,10 @@ export function ProductsTab() {
         columns={[
           { 
             field: 'thumbnail',
-            headerName: 'تصویر', 
+            headerName: <p className='text-xl'>تصویر</p>, 
             width: 100,
+            filterable: false,
+            sortable: false,
             renderCell: (params) => (
               <img
               src={`http://localhost:8000/images/products/thumbnails/${params.value}`}
@@ -66,10 +66,10 @@ export function ProductsTab() {
               />
               ),
             },
-          { field: 'name', headerName: 'نام کالا', flex: 2 },
+          { field: 'name', headerName: <p className='text-xl'>نام کالا</p>, flex: 2 },
           {
             field: 'category',
-            headerName: 'دسته بندی',
+            headerName: <p className='text-xl'>دسته بندی</p>,
             flex: 1,
             renderCell: (params) => (
               <p>{categories[params.value]}</p>
@@ -77,8 +77,10 @@ export function ProductsTab() {
             },
             { 
               field: 'delete-edit',
-              headerName: 'عملیات',
+              headerName: <p className='text-xl'>عملیات</p>,
               flex: 1,
+              sortable: false,
+              filterable: false,
               renderCell: () => (
                 <div>
                 <Button>حذف</Button>

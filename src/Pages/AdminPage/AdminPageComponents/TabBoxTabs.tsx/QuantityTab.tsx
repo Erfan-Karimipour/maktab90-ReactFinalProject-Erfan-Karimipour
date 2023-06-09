@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { Button, IconButton, ThemeProvider, createTheme } from '@mui/material';
@@ -6,12 +6,6 @@ import { StyledButton } from '@nextui-org/react';
 import { blue } from '@mui/material/colors';
 
 export function QuantityTab() {
-
-  const theme = createTheme({
-    palette: {
-      primary: blue
-    }
-  })
 
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
@@ -29,10 +23,8 @@ export function QuantityTab() {
     axios
       .get(`http://localhost:8000/api/products?page=${paginationModel.page+1}`)
       .then((res) => {
-        console.log(res);
         const products = res.data.data.products;
         const total = res.data.total;
-        console.log(total);
         
         setRows(products);
         setRowCount(total);
@@ -46,7 +38,7 @@ export function QuantityTab() {
     '64758fffef56602d5ba21723' : 'قطعات کامپیوتر',
     '6475909cef56602d5ba21739' : 'لپ تاپ و تجهیزات جانبی'
   }
-
+  
   return (
     
     <div style={{ height: '100%', width: '100%' }}>
@@ -54,9 +46,9 @@ export function QuantityTab() {
         rows={rows}
         getRowId={getRowId}
         columns={[
-          { field: 'name', headerName: 'نام کالا', flex: 2},
-          { field: 'price', headerName: 'قیمت', flex: 1, editable: true},
-          { field: 'quantity', headerName: 'موجودی', flex: 1, editable: true },
+          { field: 'name', headerName: <p className='text-xl'>نام کالا</p>, flex: 2},
+          { field: 'price', headerName: <p className='text-xl'>قیمت</p>, flex: 1, editable: true},
+          { field: 'quantity', headerName: <p className='text-xl'>موجودی</p>, flex: 1, editable: true },
         ]}
         rowCount={rowCount}
         paginationMode="server"

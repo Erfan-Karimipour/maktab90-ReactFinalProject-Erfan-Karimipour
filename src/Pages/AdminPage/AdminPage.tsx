@@ -6,8 +6,8 @@ import { TabBox } from './AdminPageComponents/TabBox';
 export const AdminPage = () => {
 
   let cookie = document.cookie;
-  
-  if (!cookie){
+
+  if (!cookie.includes(`adminLoggedIn=true`)){
     window.location.replace('/');
   }
 

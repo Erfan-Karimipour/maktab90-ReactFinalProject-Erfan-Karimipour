@@ -30,6 +30,7 @@ function App() {
           <Route path='/Admin'          Component={AdminPage}         />
           <Route path='*'               Component={NotFound404}       />
         </Routes>
+        
       </BrowserRouter>
     </Providers>
   )

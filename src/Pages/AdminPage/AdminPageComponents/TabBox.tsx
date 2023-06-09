@@ -23,7 +23,7 @@ export const TabBox = () => {
 
             <Tab label="کالا ها"         style={{fontSize: 18}}/>
             <Tab label="موجودی و قیمت"  style={{fontSize: 18}}/>
-            <Tab label="سفارشات"        style={{fontSize: 18}}/>
+            <Tab label="مدیریت سفارشات"        style={{fontSize: 18}}/>
             
           </Tabs>
         </Box>

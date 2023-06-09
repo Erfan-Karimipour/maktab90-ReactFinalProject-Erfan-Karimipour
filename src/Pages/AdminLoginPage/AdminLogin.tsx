@@ -3,6 +3,8 @@ import { LoginInputs } from './LoginInputs/LoginInputs'
 import LockAndKey from '../../assets/Images/LoginPage/Lockandkey.png'
 import { AdminIdentification } from '../../modules/AdminIdentification'
 import { useData } from '../../Context/Context'
+import { ToastContainer } from 'react-toastify'
+
 
 export const AdminLogin = () => {
   return (
@@ -14,6 +16,7 @@ export const AdminLogin = () => {
             <form onSubmit={(e) => AdminIdentification(e)}>
               <LoginInputs />
               <button type='submit' className='bg-red-500 text-white text-2xl font-bold rounded-md py-2 hover:bg-red-600 duration-100 w-full'>ورود</button>
+              <ToastContainer />
             </form>
             <Link to={'/'} className='text-sm text-blue-700 self-start mt-1'>بازگشت به صفحه اصلی</Link>
           </div>
