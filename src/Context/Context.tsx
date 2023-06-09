@@ -7,7 +7,7 @@ export function Providers ({children}: {children: ReactNode}){
     let [categories     , setCategories     ] = useState([]);
     let [subCategories  , setSubCategories  ] = useState([]);
     let [products       , setProducts       ] = useState([]);
-
+    let [error          , setError          ] = useState('false')
     useEffect(() => {
         axios.get(`http://localhost:8000/api/categories`).then((res) => {
             setCategories(res.data.data.categories);
@@ -15,7 +15,7 @@ export function Providers ({children}: {children: ReactNode}){
       }, [])
     
     return(
-        <Context.Provider value={{categories, setCategories, subCategories, setSubCategories, products, setProducts}}>
+        <Context.Provider value={{categories, setCategories, subCategories, setSubCategories, products, setProducts, error, setError}}>
             {children}
         </Context.Provider>
     )

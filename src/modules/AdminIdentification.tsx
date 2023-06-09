@@ -24,7 +24,7 @@ export const AdminIdentification = (e) => {
             document.cookie = `adminLoggedIn=true; expires=${expireDate.toUTCString()}; path=/`;
             
             window.location.replace(`./Admin`);
-        } 
+        }
 
         
     }).catch(() => {
