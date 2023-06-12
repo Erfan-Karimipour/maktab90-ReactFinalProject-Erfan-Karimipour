@@ -46,9 +46,21 @@ export function QuantityTab() {
         rows={rows}
         getRowId={getRowId}
         columns={[
-          { field: 'name', headerName: <p className='text-xl'>نام کالا</p>, flex: 2},
-          { field: 'price', headerName: <p className='text-xl'>قیمت</p>, flex: 1, editable: true},
-          { field: 'quantity', headerName: <p className='text-xl'>موجودی</p>, flex: 1, editable: true },
+
+          { field: 'name', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>نام کالا</p>, flex: 2, 
+            renderCell: (params) => (
+              <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
+            ),},
+
+          { field: 'price', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>قیمت</p>, flex: 1, editable: true, 
+            renderCell: (params) => (
+              <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
+            ),},
+
+          { field: 'quantity', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>موجودی</p>, flex: 1, editable: true,
+            renderCell: (params) => (
+              <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
+            ),},
         ]}
         rowCount={rowCount}
         paginationMode="server"

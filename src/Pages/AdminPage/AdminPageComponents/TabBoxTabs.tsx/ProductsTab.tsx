@@ -62,30 +62,34 @@ export function ProductsTab() {
               <img
               src={`http://localhost:8000/images/products/thumbnails/${params.value}`}
               alt={params.value}
-              style={{ width: '100%' }}
+              style={{ width: '100%'}}
               />
               ),
             },
-          { field: 'name', headerName: <p className='text-xl'>نام کالا</p>, flex: 2 },
+          { field: 'name', headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>نام کالا</p>, flex: 2,
+            renderCell: (params) => (
+              <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
+            ),
+          },
           {
             field: 'category',
-            headerName: <p className='text-xl'>دسته بندی</p>,
+            headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>دسته بندی</p>,
             flex: 1,
             renderCell: (params) => (
-              <p>{categories[params.value]}</p>
+              <p style={{ fontFamily: 'vazir' }}>{categories[params.value]}</p>
               )
             },
             { 
               field: 'delete-edit',
-              headerName: <p className='text-xl'>عملیات</p>,
+              headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>عملیات</p>,
               flex: 1,
               sortable: false,
               filterable: false,
               renderCell: () => (
                 <div>
-                <Button>حذف</Button>
+                <Button style={{ fontFamily: 'vazir' }}>حذف</Button>
                 <ThemeProvider theme={theme}>
-                  <Button>ویرایش</Button>
+                  <Button style={{ fontFamily: 'vazir' }}>ویرایش</Button>
                 </ThemeProvider>
               </div>
             )

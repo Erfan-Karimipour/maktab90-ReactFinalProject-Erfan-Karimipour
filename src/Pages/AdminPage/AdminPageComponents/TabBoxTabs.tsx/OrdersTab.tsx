@@ -52,9 +52,21 @@ export function OrdersTab() {
         rows={rows}
         getRowId={getRowId}
         columns={[
-          { field: 'user', headerName: <p className='text-xl'>خریدار</p>, flex: 2},
-          { field: 'totalPrice', headerName: <p className='text-xl'>مجموع مبلغ</p>, flex: 1},
-          { field: 'deliveryDate', headerName: <p className='text-xl'>زمان تحویل</p>, flex: 1},
+
+          { field: 'user', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>خریدار</p>, flex: 2, 
+            renderCell: (params) => (
+              <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
+            ),},
+
+          { field: 'totalPrice', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>مجموع مبلغ</p>, flex: 1, 
+            renderCell: (params) => (
+              <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
+            ),},
+
+          { field: 'deliveryDate', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>زمان تحویل</p>, flex: 1, 
+            renderCell: (params) => (
+              <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
+            ),},
         ]}
         rowCount={rowCount}
         paginationMode="server"
