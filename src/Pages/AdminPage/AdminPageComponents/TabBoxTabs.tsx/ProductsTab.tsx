@@ -86,11 +86,18 @@ export function ProductsTab() {
               sortable: false,
               filterable: false,
               renderCell: () => (
+                
                 <div>
-                <Button style={{ fontFamily: 'vazir' }}>حذف</Button>
-                <ThemeProvider theme={theme}>
-                  <Button style={{ fontFamily: 'vazir' }}>ویرایش</Button>
-                </ThemeProvider>
+                  <Button style={{ fontFamily: 'vazir' }}>
+                    حذف
+                    <ion-icon name="trash-outline" class="mr-2 text-lg"></ion-icon>
+                  </Button>
+                  <ThemeProvider theme={theme}>
+                    <Button style={{ fontFamily: 'vazir' }}>
+                      ویرایش
+                      <ion-icon name="pencil-outline" class="mr-2 text-lg"></ion-icon>
+                      </Button>
+                  </ThemeProvider>
               </div>
             )
           },

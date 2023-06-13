@@ -11,7 +11,7 @@ export const ContactUs = () => {
           <ion-icon name="mail-outline" class="mr-2"></ion-icon>
         </p>
         <p className='flex items-center'>
-          <p>09555555533</p>
+          <p>02155555555</p>
           <ion-icon name="call-outline" class="mr-2"></ion-icon>
         </p>
       </div>

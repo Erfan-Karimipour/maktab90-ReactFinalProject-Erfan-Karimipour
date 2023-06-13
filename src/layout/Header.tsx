@@ -14,10 +14,9 @@ export const Header = () => {
         <div className={modal == true ? 'h-22 border-b fixed w-full top-0 backdrop-blur-md bg-black bg-opacity-50 z-20 border-gray-400 duration-100' : 'h-22 border-b fixed w-full top-0 backdrop-blur-md bg-white bg-opacity-50 z-20 border-gray-400 duration-100'}  >
             
             <div className={modal == true ? 'mx-56 flex justify-between pointer-events-none' :  'mx-56 flex justify-between'}>
-                <a className='flex' href='/'>
-                    <img src={Logo} alt="Logo" width={'50px'} className='opacity-90 my-2 ml-3'/>
+                <a className='flex w-56' href='/'>
+                    <img src={Logo} alt="Logo" width={'100px'} className='opacity-90 my-2 ml-3'/>
                     <div className='w-full flex content-center h-full'>
-                        <p className='text-3xl self-center text-gray-800'>Computing Systems of</p>
                     </div>
                 </a>
 
@@ -28,7 +27,7 @@ export const Header = () => {
                     </div>
                 </div>
 
-                <div className='flex text-xl gap-8 self-center'>
+                <div className='flex text-xl gap-8 self-center w-56'>
                     <Link to='/AdminLogin'><button className='border-opacity-0 border-b-2 border-red-500 hover:border-opacity-100 duration-100 px-1 rounded-sm'>ورود ادمین</button></Link>  
                     <Link to='/ShoppingCart'><button className='border-opacity-0 border-b-2 border-red-500 hover:border-opacity-100 duration-100 px-1 rounded-sm'>سبد خرید</button></Link>
                 </div>

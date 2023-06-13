@@ -5,7 +5,7 @@ export const AdminHeader = () => {
   return (
     <div className='flex mx-56'>
         <a href="/">
-          <img src={Logo} alt="Logo" width={'50px'} className='opacity-90 my-2 ml-3'/>
+          <img src={Logo} alt="Logo" width={'100px'} className='opacity-90 my-2 ml-5'/>
         </a>  
         <div className='w-full flex content-center justify-between text-3xl text-gray-800 self-center'>
             <p>صفحه ادمین</p>

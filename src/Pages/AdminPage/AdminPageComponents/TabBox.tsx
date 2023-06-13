@@ -15,7 +15,7 @@ export const TabBox = () => {
   })
 
   return (
-    <div className='px-24 '>
+    <div className='px-24'>
       <ThemeProvider theme={theme}>
         <div className='shadow-lg border bg-gray-100'>
         <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
