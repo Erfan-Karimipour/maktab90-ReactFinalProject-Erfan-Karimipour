@@ -54,7 +54,7 @@ export function ProductsTab() {
         columns={[
           { 
             field: 'thumbnail',
-            headerName: <p className='text-xl'>تصویر</p>, 
+            headerName: <p className='text-xl font-[vazir] mr-3'>تصویر</p>, 
             width: 100,
             filterable: false,
             sortable: false,
@@ -62,15 +62,15 @@ export function ProductsTab() {
               <img
               src={`http://localhost:8000/images/products/thumbnails/${params.value}`}
               alt={params.value}
-              style={{ width: '100%'}}
+              style={{ height: '100%', margin: 'auto' }}
               />
               ),
             },
           { field: 'name', headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>نام کالا</p>, flex: 2,
-            renderCell: (params) => (
-              <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
-            ),
-          },
+          renderCell: (params) => (
+            <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
+          ),
+        },
           {
             field: 'category',
             headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>دسته بندی</p>,
@@ -102,6 +102,8 @@ export function ProductsTab() {
         loading={loading}
         pageSizeOptions={[10]}
         onPaginationModelChange={setPaginationModel}
+        rowSelection={false}
+        disableColumnMenu
         />
     <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex'>
       <ion-icon name="add-circle-outline" class="text-2xl font-bold ml-2"></ion-icon>

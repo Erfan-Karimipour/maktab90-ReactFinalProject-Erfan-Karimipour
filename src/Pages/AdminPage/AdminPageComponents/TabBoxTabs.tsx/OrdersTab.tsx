@@ -22,17 +22,17 @@ export function OrdersTab() {
   const getRowId = (row) => row._id;
   
   React.useEffect(() => {
-    let x = '';
+    let filter = '';
     setLoading(true);
 
     if (showCompleted == 'all'){
-      x = `http://localhost:8000/api/orders?page=${paginationModel.page+1}`;
+      filter = `http://localhost:8000/api/orders?page=${paginationModel.page+1}`;
     } else {
-      x = `http://localhost:8000/api/orders?page=${paginationModel.page+1}&deliveryStatus=${showCompleted}`
+      filter = `http://localhost:8000/api/orders?page=${paginationModel.page+1}&deliveryStatus=${showCompleted}`
     }
 
     axios
-      .get(x)
+      .get(filter)
       .then((res) => {
         const products = res.data.data.orders;
         const total = res.data.total;
@@ -76,6 +76,8 @@ export function OrdersTab() {
         pageSizeOptions={[10]}
         onPaginationModelChange={setPaginationModel}
         editMode='cell'
+        rowSelection={false}
+        disableColumnMenu
       />
       <RadioInputs showCompleted={setShowCompleted}/>
     </div>

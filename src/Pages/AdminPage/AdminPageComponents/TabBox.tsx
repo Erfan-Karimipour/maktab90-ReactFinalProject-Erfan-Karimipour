@@ -21,9 +21,9 @@ export const TabBox = () => {
         <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
           <Tabs value={value} centered onChange={(event, newValue) => setValue(newValue)}>
 
-            <Tab label="کالا ها"         style={{fontSize: 18}}/>
-            <Tab label="موجودی و قیمت"  style={{fontSize: 18}}/>
-            <Tab label="مدیریت سفارشات"        style={{fontSize: 18}}/>
+            <Tab label="کالا ها"                style={{fontSize: 18, fontFamily: "vazir"}}/>
+            <Tab label="موجودی و قیمت"        style={{fontSize: 18, fontFamily: "vazir"}}/>
+            <Tab label="مدیریت سفارشات"        style={{fontSize: 18, fontFamily: "vazir"}}/>
             
           </Tabs>
         </Box>
