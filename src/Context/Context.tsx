@@ -9,6 +9,11 @@ export function Providers ({children}: {children: ReactNode}){
     let [products       , setProducts       ] = useState([]);
     let [error          , setError          ] = useState('false')
     let [modal          , setModal          ] = useState(false);
+    let [adminLoginError, setAdminLoginError] = useState({  
+
+        userName: false,
+        password: false
+      })
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/categories`).then((res) => {
@@ -17,7 +22,7 @@ export function Providers ({children}: {children: ReactNode}){
       }, [])
     
     return(
-        <Context.Provider value={{categories, setCategories, subCategories, setSubCategories, products, setProducts, error, setError, modal, setModal}}>
+        <Context.Provider value={{categories, setCategories, subCategories, setSubCategories, products, setProducts, error, setError, modal, setModal, adminLoginError, setAdminLoginError}}>
             {children}
         </Context.Provider>
     )
