@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { Button, IconButton, ThemeProvider, createTheme } from '@mui/material';
 import { StyledButton } from '@nextui-org/react';
 import { blue } from '@mui/material/colors';
+import { HandleDelete } from '../../../../modules/HandleDelete';
+import { useData } from '../../../../Context/Context';
 
 export function ProductsTab() {
+
+  let {updateList, setUpdateList} = useData();
 
   const theme = createTheme({
     palette: {
@@ -24,7 +28,7 @@ export function ProductsTab() {
 
   const getRowId = (row) => row._id;
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
     axios
       .get(`http://localhost:8000/api/products?page=${paginationModel.page+1}`)
@@ -36,7 +40,7 @@ export function ProductsTab() {
         setRowCount(total);
         setLoading(false);
       });
-  }, [paginationModel.page, paginationModel.pageSize]);
+  }, [paginationModel.page, paginationModel.pageSize, updateList]);
 
   const categories = {
     '64758e62ef56602d5ba216fd': 'کامپیوتر و مانیتور',
@@ -44,6 +48,11 @@ export function ProductsTab() {
     '64758fffef56602d5ba21723' : 'قطعات کامپیوتر',
     '6475909cef56602d5ba21739' : 'لپ تاپ و تجهیزات جانبی'
   }
+
+  useEffect(() => {
+    console.log(`need to render`);
+  }, [rows])
+  
 
   return (
     
@@ -80,15 +89,21 @@ export function ProductsTab() {
               )
             },
             { 
-              field: 'delete-edit',
+              field: '_id',
               headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>عملیات</p>,
               flex: 1,
               sortable: false,
               filterable: false,
-              renderCell: () => (
+              renderCell: (params) => (
                 
                 <div>
-                  <Button style={{ fontFamily: 'vazir' }}>
+                  <Button style={{ fontFamily: 'vazir' }} id={params.value} onClick={(e) => {
+                    HandleDelete(e); 
+                    setUpdateList(updateList + 1);
+                    axios.get(`http://localhost:8000/api/products?page=${paginationModel.page+1}`).then((res) => {
+                      setRows(res.data.data.products)
+                    })
+                    }}>
                     حذف
                     <ion-icon name="trash-outline" class="mr-2 text-lg"></ion-icon>
                   </Button>

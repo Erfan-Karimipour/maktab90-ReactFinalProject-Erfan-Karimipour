@@ -8,7 +8,7 @@ export const LoginInputs = () => {
   let {adminLoginError} = useData();
 
   const textFieldStyles = {
-    height: '70px',
+    height: '80px',
     color: '#fafafa',
   }
   const theme = createTheme({
@@ -24,7 +24,8 @@ export const LoginInputs = () => {
     shape: {
       borderRadius: 8
     },
-    shadows: ['none', '2px 2px 2px 2px #000']
+    shadows: ['none', '2px 2px 2px 2px #000'],
+
   })
 
   return (

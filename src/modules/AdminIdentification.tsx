@@ -2,7 +2,7 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import { useData } from "../Context/Context";
 
-export const AdminIdentification = (e, setAdminLoginError) => {
+export const AdminIdentification = (e, setAdminLoginError, setOpen) => {
     e.preventDefault();
 
     let userName = e.target[0].value;
@@ -36,6 +36,8 @@ export const AdminIdentification = (e, setAdminLoginError) => {
             userName: Boolean(!userName),
             password: Boolean(!password)
         })
+        if (err.response.data.status == 'fail')
+        setOpen(true);
     }
 )
 }
