@@ -22,12 +22,6 @@ export function ProductsTab() {
     '6475909cef56602d5ba21739' : 'لپ تاپ و تجهیزات جانبی'
   }
 
-  const theme = createTheme({
-    palette: {
-      primary: blue
-    }
-  })
-
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 10,
@@ -49,9 +43,22 @@ export function ProductsTab() {
       });
   }, [paginationModel.page, paginationModel.pageSize, updateList]);
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#ff0000'
+      },
+      secondary: {
+        main: '#0044ff'
+      }
+    },
+    direction: "rtl"
+  })
+
 
   return (
-    
+    <ThemeProvider theme={theme}>
+
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
         rows={rows}
@@ -71,28 +78,28 @@ export function ProductsTab() {
               />
               ),
             },
-          { field: 'name', headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>نام کالا</p>, flex: 2,
-          renderCell: (params) => (
-            <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
-          ),
-        },
-          {
-            field: 'category',
-            headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>دسته بندی</p>,
-            flex: 1,
+            { field: 'name', headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>نام کالا</p>, flex: 2,
             renderCell: (params) => (
-              <p style={{ fontFamily: 'vazir' }}>{categories[params.value]}</p>
-              )
+              <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
+              ),
             },
-            { 
-              field: '_id',
-              headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>عملیات</p>,
+            {
+              field: 'category',
+              headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>دسته بندی</p>,
               flex: 1,
-              sortable: false,
-              filterable: false,
               renderCell: (params) => (
-                
-                <div>
+                <p style={{ fontFamily: 'vazir' }}>{categories[params.value]}</p>
+                )
+              },
+              { 
+                field: '_id',
+                headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>عملیات</p>,
+                flex: 1,
+                sortable: false,
+                filterable: false,
+                renderCell: (params) => (
+                  
+                  <div>
                   <Button style={{ fontFamily: 'vazir' }} id={params.value} onClick={(e) => {
                     HandleDelete(e); 
                     setUpdateList(updateList + 1);
@@ -100,16 +107,16 @@ export function ProductsTab() {
                       setRows(res.data.data.products);
                       setUpdateList(!updateList);
                     })
-                    }}>
+                  }}>
                     حذف
                     <ion-icon name="trash-outline" class="mr-2 text-lg"></ion-icon>
                   </Button>
-                  <ThemeProvider theme={theme}>
-                    <Button style={{ fontFamily: 'vazir' }}>
-                      ویرایش
-                      <ion-icon name="pencil-outline" class="mr-2 text-lg"></ion-icon>
-                    </Button>
-                  </ThemeProvider>
+
+                  <Button style={{ fontFamily: 'vazir' }} color='secondary'>
+                    ویرایش
+                    <ion-icon name="pencil-outline" class="mr-2 text-lg"></ion-icon>
+                  </Button>
+
               </div>
             )
           },
@@ -132,5 +139,6 @@ export function ProductsTab() {
     </button>
     <AddModal />
     </div>
+    </ThemeProvider>
   );
 }
