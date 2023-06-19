@@ -8,8 +8,8 @@ import { RadioInputs } from './OrdersTabComponents/RadioInputs';
 
 export function OrdersTab() {
 
-  let [showCompleted, setShowCompleted] = useState(true)
-
+  let [showCompleted, setShowCompleted] = useState('all')
+  
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
     pageSize: 10,
@@ -18,13 +18,21 @@ export function OrdersTab() {
   const [rows, setRows] = React.useState([]);
   const [rowCount, setRowCount] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
-
+  
   const getRowId = (row) => row._id;
-
+  
   React.useEffect(() => {
+    let filter = '';
     setLoading(true);
+
+    if (showCompleted == 'all'){
+      filter = `http://localhost:8000/api/orders?page=${paginationModel.page+1}`;
+    } else {
+      filter = `http://localhost:8000/api/orders?page=${paginationModel.page+1}&deliveryStatus=${showCompleted}`
+    }
+
     axios
-      .get(`http://localhost:8000/api/orders?page=${paginationModel.page+1}&deliveryStatus=${showCompleted}`)
+      .get(filter)
       .then((res) => {
         const products = res.data.data.orders;
         const total = res.data.total;
@@ -44,9 +52,21 @@ export function OrdersTab() {
         rows={rows}
         getRowId={getRowId}
         columns={[
-          { field: 'user', headerName: <p className='text-xl'>خریدار</p>, flex: 2},
-          { field: 'totalPrice', headerName: <p className='text-xl'>مجموع مبلغ</p>, flex: 1},
-          { field: 'deliveryDate', headerName: <p className='text-xl'>زمان تحویل</p>, flex: 1},
+
+          { field: 'user', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>خریدار</p>, flex: 2, 
+            renderCell: (params) => (
+              <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
+            ),},
+
+          { field: 'totalPrice', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>مجموع مبلغ</p>, flex: 1, 
+            renderCell: (params) => (
+              <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
+            ),},
+
+          { field: 'deliveryDate', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>زمان تحویل</p>, flex: 1, 
+            renderCell: (params) => (
+              <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
+            ),},
         ]}
         rowCount={rowCount}
         paginationMode="server"
@@ -56,6 +76,8 @@ export function OrdersTab() {
         pageSizeOptions={[10]}
         onPaginationModelChange={setPaginationModel}
         editMode='cell'
+        rowSelection={false}
+        disableColumnMenu
       />
       <RadioInputs showCompleted={setShowCompleted}/>
     </div>

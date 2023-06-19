@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { Button, IconButton, ThemeProvider, createTheme } from '@mui/material';
 import { StyledButton } from '@nextui-org/react';
 import { blue } from '@mui/material/colors';
+import { HandleDelete } from '../../../../modules/HandleDelete';
+import { useData } from '../../../../Context/Context';
 
 export function ProductsTab() {
+
+  let {updateList, setUpdateList} = useData();
 
   const theme = createTheme({
     palette: {
@@ -24,7 +28,7 @@ export function ProductsTab() {
 
   const getRowId = (row) => row._id;
 
-  React.useEffect(() => {
+  useEffect(() => {
     setLoading(true);
     axios
       .get(`http://localhost:8000/api/products?page=${paginationModel.page+1}`)
@@ -36,7 +40,7 @@ export function ProductsTab() {
         setRowCount(total);
         setLoading(false);
       });
-  }, [paginationModel.page, paginationModel.pageSize]);
+  }, [paginationModel.page, paginationModel.pageSize, updateList]);
 
   const categories = {
     '64758e62ef56602d5ba216fd': 'کامپیوتر و مانیتور',
@@ -44,6 +48,11 @@ export function ProductsTab() {
     '64758fffef56602d5ba21723' : 'قطعات کامپیوتر',
     '6475909cef56602d5ba21739' : 'لپ تاپ و تجهیزات جانبی'
   }
+
+  useEffect(() => {
+    console.log(`need to render`);
+  }, [rows])
+  
 
   return (
     
@@ -54,7 +63,7 @@ export function ProductsTab() {
         columns={[
           { 
             field: 'thumbnail',
-            headerName: <p className='text-xl'>تصویر</p>, 
+            headerName: <p className='text-xl font-[vazir] mr-3'>تصویر</p>, 
             width: 100,
             filterable: false,
             sortable: false,
@@ -62,31 +71,48 @@ export function ProductsTab() {
               <img
               src={`http://localhost:8000/images/products/thumbnails/${params.value}`}
               alt={params.value}
-              style={{ width: '100%' }}
+              style={{ height: '100%', margin: 'auto' }}
               />
               ),
             },
-          { field: 'name', headerName: <p className='text-xl'>نام کالا</p>, flex: 2 },
+          { field: 'name', headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>نام کالا</p>, flex: 2,
+          renderCell: (params) => (
+            <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
+          ),
+        },
           {
             field: 'category',
-            headerName: <p className='text-xl'>دسته بندی</p>,
+            headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>دسته بندی</p>,
             flex: 1,
             renderCell: (params) => (
-              <p>{categories[params.value]}</p>
+              <p style={{ fontFamily: 'vazir' }}>{categories[params.value]}</p>
               )
             },
             { 
-              field: 'delete-edit',
-              headerName: <p className='text-xl'>عملیات</p>,
+              field: '_id',
+              headerName: <p className='text-xl' style={{ fontFamily: 'vazir' }}>عملیات</p>,
               flex: 1,
               sortable: false,
               filterable: false,
-              renderCell: () => (
+              renderCell: (params) => (
+                
                 <div>
-                <Button>حذف</Button>
-                <ThemeProvider theme={theme}>
-                  <Button>ویرایش</Button>
-                </ThemeProvider>
+                  <Button style={{ fontFamily: 'vazir' }} id={params.value} onClick={(e) => {
+                    HandleDelete(e); 
+                    setUpdateList(updateList + 1);
+                    axios.get(`http://localhost:8000/api/products?page=${paginationModel.page+1}`).then((res) => {
+                      setRows(res.data.data.products)
+                    })
+                    }}>
+                    حذف
+                    <ion-icon name="trash-outline" class="mr-2 text-lg"></ion-icon>
+                  </Button>
+                  <ThemeProvider theme={theme}>
+                    <Button style={{ fontFamily: 'vazir' }}>
+                      ویرایش
+                      <ion-icon name="pencil-outline" class="mr-2 text-lg"></ion-icon>
+                      </Button>
+                  </ThemeProvider>
               </div>
             )
           },
@@ -98,6 +124,8 @@ export function ProductsTab() {
         loading={loading}
         pageSizeOptions={[10]}
         onPaginationModelChange={setPaginationModel}
+        rowSelection={false}
+        disableColumnMenu
         />
     <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex'>
       <ion-icon name="add-circle-outline" class="text-2xl font-bold ml-2"></ion-icon>
