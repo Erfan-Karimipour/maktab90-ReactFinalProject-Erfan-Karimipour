@@ -1,15 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import { Button, IconButton, ThemeProvider, createTheme } from '@mui/material';
-import { StyledButton } from '@nextui-org/react';
 import { blue } from '@mui/material/colors';
 import { HandleDelete } from '../../../../modules/HandleDelete';
 import { useData } from '../../../../Context/Context';
+import { AddModal } from './ProductsTabComponents/AddModal';
 
 export function ProductsTab() {
 
-  let {updateList, setUpdateList} = useData();
+  let {updateList, setUpdateList, setModal} = useData();
+  
+  const [rows       , setRows     ] = useState([]);
+  const [rowCount   , setRowCount ] = useState(0);
+  const [loading    , setLoading  ] = useState(true);
+
+  const categories = {
+    '64758e62ef56602d5ba216fd': 'کامپیوتر و مانیتور',
+    '64758f43ef56602d5ba2170f': 'کنسول و واقعیت مجازی',
+    '64758fffef56602d5ba21723' : 'قطعات کامپیوتر',
+    '6475909cef56602d5ba21739' : 'لپ تاپ و تجهیزات جانبی'
+  }
 
   const theme = createTheme({
     palette: {
@@ -17,14 +28,10 @@ export function ProductsTab() {
     }
   })
 
-  const [paginationModel, setPaginationModel] = React.useState({
+  const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 10,
   });
-
-  const [rows, setRows] = React.useState([]);
-  const [rowCount, setRowCount] = React.useState(0);
-  const [loading, setLoading] = React.useState(true);
 
   const getRowId = (row) => row._id;
 
@@ -42,17 +49,6 @@ export function ProductsTab() {
       });
   }, [paginationModel.page, paginationModel.pageSize, updateList]);
 
-  const categories = {
-    '64758e62ef56602d5ba216fd': 'کامپیوتر و مانیتور',
-    '64758f43ef56602d5ba2170f': 'کنسول و واقعیت مجازی',
-    '64758fffef56602d5ba21723' : 'قطعات کامپیوتر',
-    '6475909cef56602d5ba21739' : 'لپ تاپ و تجهیزات جانبی'
-  }
-
-  useEffect(() => {
-    console.log(`need to render`);
-  }, [rows])
-  
 
   return (
     
@@ -101,7 +97,8 @@ export function ProductsTab() {
                     HandleDelete(e); 
                     setUpdateList(updateList + 1);
                     axios.get(`http://localhost:8000/api/products?page=${paginationModel.page+1}`).then((res) => {
-                      setRows(res.data.data.products)
+                      setRows(res.data.data.products);
+                      setUpdateList(!updateList);
                     })
                     }}>
                     حذف
@@ -111,7 +108,7 @@ export function ProductsTab() {
                     <Button style={{ fontFamily: 'vazir' }}>
                       ویرایش
                       <ion-icon name="pencil-outline" class="mr-2 text-lg"></ion-icon>
-                      </Button>
+                    </Button>
                   </ThemeProvider>
               </div>
             )
@@ -127,12 +124,13 @@ export function ProductsTab() {
         rowSelection={false}
         disableColumnMenu
         />
-    <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex'>
+    <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex' onClick={() => setModal(true)}>
       <ion-icon name="add-circle-outline" class="text-2xl font-bold ml-2"></ion-icon>
       <p>
         افزودن کالا
       </p>
     </button>
+    <AddModal />
     </div>
   );
 }

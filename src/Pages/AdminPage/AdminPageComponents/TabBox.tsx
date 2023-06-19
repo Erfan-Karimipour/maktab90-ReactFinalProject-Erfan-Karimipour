@@ -16,13 +16,11 @@ export const TabBox = () => {
     },
   })
 
-  useEffect(() => {
-    console.log(`reRendered`);
-
-  }, [updateList])
   
   return (
+
     <div className='px-24'>
+
       <ThemeProvider theme={theme}>
         <div className='shadow-lg border bg-gray-100'>
         <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
@@ -41,7 +39,9 @@ export const TabBox = () => {
           {value == 2 && <OrdersTab   /> }
         </div>
       </ThemeProvider>
+
     </div>
+    
   )
 
 }

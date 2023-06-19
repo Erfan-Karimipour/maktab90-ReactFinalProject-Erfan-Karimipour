@@ -15,6 +15,7 @@ export function OrdersTab() {
     pageSize: 10,
   });
 
+
   const [rows, setRows] = React.useState([]);
   const [rowCount, setRowCount] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
@@ -43,43 +44,50 @@ export function OrdersTab() {
         setLoading(false);
       });
   }, [paginationModel.page, paginationModel.pageSize, showCompleted]);
+
+  const theme = createTheme({
+    direction: "rtl"
+  })
   
   return (
 
     
     <div style={{ height: '100%', width: '100%' }}>
+      <ThemeProvider theme={theme}>
+
       <DataGrid
         rows={rows}
         getRowId={getRowId}
         columns={[
-
+          
           { field: 'user', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>خریدار</p>, flex: 2, 
+          renderCell: (params) => (
+            <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
+            ),},
+            
+            { field: 'totalPrice', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>مجموع مبلغ</p>, flex: 1, 
             renderCell: (params) => (
               <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
-            ),},
-
-          { field: 'totalPrice', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>مجموع مبلغ</p>, flex: 1, 
-            renderCell: (params) => (
-              <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
-            ),},
-
-          { field: 'deliveryDate', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>زمان تحویل</p>, flex: 1, 
-            renderCell: (params) => (
-              <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
-            ),},
-        ]}
-        rowCount={rowCount}
-        paginationMode="server"
-        paginationModel={paginationModel}
-        pagination={true}
-        loading={loading}
-        pageSizeOptions={[10]}
-        onPaginationModelChange={setPaginationModel}
-        editMode='cell'
-        rowSelection={false}
-        disableColumnMenu
-      />
+              ),},
+              
+              { field: 'deliveryDate', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>زمان تحویل</p>, flex: 1, 
+              renderCell: (params) => (
+                <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
+                ),},
+              ]}
+              rowCount={rowCount}
+              paginationMode="server"
+              paginationModel={paginationModel}
+              pagination={true}
+              loading={loading}
+              pageSizeOptions={[10]}
+              onPaginationModelChange={setPaginationModel}
+              editMode='cell'
+              rowSelection={false}
+              disableColumnMenu
+              />
       <RadioInputs showCompleted={setShowCompleted}/>
+              </ThemeProvider>
     </div>
   );
 }
