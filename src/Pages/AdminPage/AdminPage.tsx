@@ -2,7 +2,7 @@ import React from 'react'
 import { AdminHeader } from './AdminPageComponents/AdminHeader'
 import { useData } from '../../Context/Context'
 import { TabBox } from './AdminPageComponents/TabBox';
-import { AddModal } from './AdminPageComponents/TabBoxTabs.tsx/ProductsTabComponents/AddModal';
+import { AddModal } from './AdminPageComponents/TabBoxTabs.tsx/ProductsTabComponents/AddOrEditModal';
 
 export const AdminPage = () => {
 

@@ -5,7 +5,7 @@ import { Button, IconButton, ThemeProvider, createTheme } from '@mui/material';
 import { blue } from '@mui/material/colors';
 import { HandleDelete } from '../../../../modules/HandleDelete';
 import { useData } from '../../../../Context/Context';
-import { AddModal } from './ProductsTabComponents/AddModal';
+import { AddOrEditModal } from './ProductsTabComponents/AddOrEditModal';
 
 export function ProductsTab() {
 
@@ -137,7 +137,7 @@ export function ProductsTab() {
         افزودن کالا
       </p>
     </button>
-    <AddModal />
+    <AddOrEditModal />
     </div>
     </ThemeProvider>
   );

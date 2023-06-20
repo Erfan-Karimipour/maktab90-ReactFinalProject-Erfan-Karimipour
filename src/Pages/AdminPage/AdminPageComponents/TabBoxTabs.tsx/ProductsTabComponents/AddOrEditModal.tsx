@@ -5,7 +5,7 @@ import defaultImage from '../../../../../assets/Images/defaultImage.jpg'
 import axios, { toFormData } from 'axios'
 import { validateImage } from '../../../../../modules/ValidateImage'
 
-export const AddModal = (e) => {
+export const AddOrEditModal = (e) => {
 
   let {modal, setModal, categories} = useData();
 
@@ -69,27 +69,25 @@ export const AddModal = (e) => {
 
                 console.log(e.target.elements);
                 
-                let formData = {
-                  
-                  name        : e.target.elements.name.value,
-                  category    : selectedCategory,
-                  subcategory : selectedSubCategory,
-                  description : e.target.elements.description.value,
-                  thumbnail   : e.target.elements.thumbnail.value,
-                  image       : e.target.elements.image.value,
-                  price       : e.target.elements.price.value,
-                  brand       : e.target.elements.brand.value,
-                  quantity    : e.target.elements.quantity.value,
-                  
-                }
-
-                console.log(formData);
+                let formData = new FormData();
                 
-
-                axios.post(`http://localhost:8000/api/products`, formData).then((res) => {
-                  console.log(res);
-                  
+                formData.append('name'        , e.target.elements.name.value);
+                formData.append('category'    , selectedCategory);
+                formData.append('subcategory' , selectedSubCategory);
+                formData.append('description' , e.target.elements.description.value);
+                formData.append('thumbnail'   , e.target.elements.thumbnail.files[0]);
+                formData.append('images'      , e.target.elements.image.files[0]);
+                formData.append('price'       , e.target.elements.price.value);
+                formData.append('brand'       , e.target.elements.brand.value);
+                formData.append('quantity'    , e.target.elements.quantity.value);
+                
+                axios.post('http://localhost:8000/api/products', formData)
+                .then(response => {
+                  console.log(response.data);
                 })
+                .catch(error => {
+                  console.log(error);
+                });
                 
                 
               }}>
@@ -138,10 +136,12 @@ export const AddModal = (e) => {
                   <div className='w-96'>
 
                     <img src={imageSrc} alt="Default Image" className='rounded-md' />
+
                     <label htmlFor="image">تصویر پیش نمایش</label>
                     <input type='file' id='thumbnail' name='thumbnail' accept='image/png, image/jpeg, image/webp' multiple className='my-2 w-full' onChange={(e) => showImage(e)} />
+
                     <label htmlFor="image">تصویر اصلی</label>
-                    <input type='file' id='image' name='image' accept='image/png, image/jpeg, image/webp' multiple className='my-2 w-full' onChange={(e) => showImage(e)} />
+                    <input type='file' id='image' name='image' accept='image/png, image/jpeg, image/webp' multiple className='my-2 w-full' />
                     
                     <TextField type="number" name='price' id='price' placeholder='قیمت' fullWidth />
                     <div className='my-2'>
