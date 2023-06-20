@@ -55,13 +55,15 @@ export function ProductsTab() {
     direction: "rtl"
   })
 
+  let [editableData, setEditableData] = useState({});
+
 
   return (
     <ThemeProvider theme={theme}>
 
     <div style={{ height: '100%', width: '100%' }}>
-  <DataGrid
-          rows={rows}
+      <DataGrid
+        rows={rows}
         getRowId={getRowId}
         columns={[
           { 
@@ -112,7 +114,7 @@ export function ProductsTab() {
                     <ion-icon name="trash-outline" class="mr-2 text-lg"></ion-icon>
                   </Button>
 
-                  <Button style={{ fontFamily: 'vazir' }} color='secondary'>
+                  <Button style={{ fontFamily: 'vazir' }} color='secondary' onClick={() => {setModal(true), setEditableData(params.row)}}>
                     ویرایش
                     <ion-icon name="pencil-outline" class="mr-2 text-lg"></ion-icon>
                   </Button>
@@ -131,13 +133,13 @@ export function ProductsTab() {
         rowSelection={false}
         disableColumnMenu
         />
-    <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex' onClick={() => setModal(true)}>
+    <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex' onClick={() => {setModal(true), setEditableData({})}}>
       <ion-icon name="add-circle-outline" class="text-2xl font-bold ml-2"></ion-icon>
       <p>
         افزودن کالا
       </p>
     </button>
-    <AddOrEditModal />
+    <AddOrEditModal editableData={editableData}/>
     </div>
     </ThemeProvider>
   );

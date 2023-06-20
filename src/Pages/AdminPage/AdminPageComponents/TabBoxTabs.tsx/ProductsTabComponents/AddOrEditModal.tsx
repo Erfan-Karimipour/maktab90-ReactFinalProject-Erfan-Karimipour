@@ -5,15 +5,19 @@ import defaultImage from '../../../../../assets/Images/defaultImage.jpg'
 import axios, { toFormData } from 'axios'
 import { validateImage } from '../../../../../modules/ValidateImage'
 
-export const AddOrEditModal = (e) => {
+export const AddOrEditModal = ({editableData}) => {
 
+  let edit = false;
+  if (Object.keys(editableData).length > 0) edit = true;
+
+  console.log(editableData);
+  
   let {modal, setModal, categories} = useData();
 
   let [imageSrc           , setImageSrc             ] = useState(defaultImage);
   let [selectedCategory   , setSelectedCategory     ] = useState(`none`);
   let [subCategories      , setSubCategories        ] = useState([])
   let [selectedSubCategory, setSelectedSubCategory  ] = useState(`none`);
-
 
   useEffect(() => {
 
@@ -55,7 +59,7 @@ export const AddOrEditModal = (e) => {
 {/* Header */}
 
             <div className='flex text-xl items-center justify-between mb-2'>
-                <p>افزودن کالا</p>
+                <p>{edit ? 'ویرایش کالا' : 'افزودن کالا'}</p>
                 <button onClick={() => setModal(false)}>
                   <ion-icon name="close-circle-outline" class="text-red-600"></ion-icon>
                 </button>
@@ -96,14 +100,14 @@ export const AddOrEditModal = (e) => {
 
                   <div className='ml-2 w-full'>
 
-                    <TextField type='text' variant="outlined" id='name' label="نام کالا" fullWidth />
+                    <TextField type='text' variant="outlined" id='name' label="نام کالا" fullWidth value={edit ? editableData.name : ``}/>
 
                     <div className='my-2'>
                     
                     <Select name="categoty" id="categoty" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as string)} fullWidth>
                       <MenuItem value="none">لطفا یک دسته بندی را انتخاب کنید</MenuItem>
                       {categories.map((category) => (
-                        <MenuItem value={category._id}>{category.name}</MenuItem>
+                        <MenuItem value={category._id} key={category._id}>{category.name}</MenuItem>
                         ))}
                     </Select>
                     
