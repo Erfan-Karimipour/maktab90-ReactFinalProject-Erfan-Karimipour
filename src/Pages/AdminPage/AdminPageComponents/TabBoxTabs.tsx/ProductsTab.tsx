@@ -60,8 +60,8 @@ export function ProductsTab() {
     <ThemeProvider theme={theme}>
 
     <div style={{ height: '100%', width: '100%' }}>
-      <DataGrid
-        rows={rows}
+  <DataGrid
+          rows={rows}
         getRowId={getRowId}
         columns={[
           { 

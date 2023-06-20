@@ -2,7 +2,8 @@ import { Input, MenuItem, Select, StyledEngineProvider, TextField, ThemeProvider
 import React, { useEffect, useState } from 'react'
 import { useData } from '../../../../../Context/Context'
 import defaultImage from '../../../../../assets/Images/defaultImage.jpg'
-import axios from 'axios'
+import axios, { toFormData } from 'axios'
+import { validateImage } from '../../../../../modules/ValidateImage'
 
 export const AddModal = (e) => {
 
@@ -12,6 +13,7 @@ export const AddModal = (e) => {
   let [selectedCategory   , setSelectedCategory     ] = useState(`none`);
   let [subCategories      , setSubCategories        ] = useState([])
   let [selectedSubCategory, setSelectedSubCategory  ] = useState(`none`);
+
 
   useEffect(() => {
 
@@ -30,15 +32,30 @@ export const AddModal = (e) => {
     },
   })
 
+  async function showImage(e) {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        await validateImage(file);
+        setImageSrc(URL.createObjectURL(file));
+      } catch (error) {
+        setImageSrc(defaultImage);
+        return;
+      }
+    } else {
+      setImageSrc(defaultImage);
+    }
+  }
+
 
   return (
     <div className={modal == false ? 'hidden' : 'bg-black bg-opacity-50 absolute top-0 right-0 w-screen h-screen z-10 flex'}>
-        <div className='flex self-center m-auto bg-white flex-col p-2 rounded-xl w-1/3'>
+        <div className='flex self-center m-auto bg-white flex-col p-2 rounded-xl'>
           
 {/* Header */}
 
             <div className='flex text-xl items-center justify-between mb-2'>
-                <p>افزودن/ویرایش کالا</p>
+                <p>افزودن کالا</p>
                 <button onClick={() => setModal(false)}>
                   <ion-icon name="close-circle-outline" class="text-red-600"></ion-icon>
                 </button>
@@ -47,14 +64,41 @@ export const AddModal = (e) => {
 {/* Main */}
 
             <ThemeProvider theme={theme}>
-              <form>
+              <form onSubmit={(e) => {
+                e.preventDefault();
 
-                <div className='flex'>
+                console.log(e.target.elements);
+                
+                let formData = {
+                  
+                  name        : e.target.elements.name.value,
+                  category    : selectedCategory,
+                  subcategory : selectedSubCategory,
+                  description : e.target.elements.description.value,
+                  thumbnail   : e.target.elements.thumbnail.value,
+                  image       : e.target.elements.image.value,
+                  price       : e.target.elements.price.value,
+                  brand       : e.target.elements.brand.value,
+                  quantity    : e.target.elements.quantity.value,
+                  
+                }
 
-                  <div className='ml-2'>
+                console.log(formData);
+                
 
-                    <TextField type='text' variant="outlined" label="نام کالا" fullWidth />
-                    <input type='file' id='fileInput' name='fileInput' accept='image/png, image/jpeg, image/webp' multiple className='my-2 w-full' onChange={(e) => setImageSrc(e.target.value)}/>
+                axios.post(`http://localhost:8000/api/products`, formData).then((res) => {
+                  console.log(res);
+                  
+                })
+                
+                
+              }}>
+
+                <div className='flex justify-between w-[26vw]'>
+
+                  <div className='ml-2 w-full'>
+
+                    <TextField type='text' variant="outlined" id='name' label="نام کالا" fullWidth />
 
                     <div className='my-2'>
                     
@@ -77,13 +121,38 @@ export const AddModal = (e) => {
                     
                     </div>
 
+                    <TextField
+                      id="description"
+                      label="توضیحات محصول"
+                      multiline
+                      rows={8}
+                      fullWidth
+                    />
 
-                  <p>Use Text-area for this section</p> 
+                    <div className='my-2'>
+                      <TextField type="text" name='brand' id='brand' placeholder='برند' fullWidth />
+                    </div>
+
                   </div>
 
-                  <img src={imageSrc} alt="Default Image" className='w-52 h-fit rounded-md' />
-                </div>
+                  <div className='w-96'>
 
+                    <img src={imageSrc} alt="Default Image" className='rounded-md' />
+                    <label htmlFor="image">تصویر پیش نمایش</label>
+                    <input type='file' id='thumbnail' name='thumbnail' accept='image/png, image/jpeg, image/webp' multiple className='my-2 w-full' onChange={(e) => showImage(e)} />
+                    <label htmlFor="image">تصویر اصلی</label>
+                    <input type='file' id='image' name='image' accept='image/png, image/jpeg, image/webp' multiple className='my-2 w-full' onChange={(e) => showImage(e)} />
+                    
+                    <TextField type="number" name='price' id='price' placeholder='قیمت' fullWidth />
+                    <div className='my-2'>
+                      <TextField type="number" name='quantity' id='quantity' placeholder='مقدار' fullWidth />
+                    </div>
+
+                  </div>
+                </div>
+                
+
+                <button type='submit' className='text-xl w-full bg-red-600 text-white mt-2 py-1 rounded-md'>افزودن</button>
               </form>
             </ThemeProvider>
 
