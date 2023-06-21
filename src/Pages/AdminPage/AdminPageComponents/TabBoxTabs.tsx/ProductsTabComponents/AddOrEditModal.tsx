@@ -6,24 +6,39 @@ import axios, { toFormData } from 'axios'
 import { validateImage } from '../../../../../modules/ValidateImage'
 
 export const AddOrEditModal = ({editableData}) => {
-
+  
   let edit = false;
   if (Object.keys(editableData).length > 0) edit = true;
-
-  console.log(editableData);
   
-  let {modal, setModal, categories} = useData();
+  let {modal, setModal, categories, updateList, setUpdateList} = useData();
 
   let [imageSrc           , setImageSrc             ] = useState(defaultImage);
   let [selectedCategory   , setSelectedCategory     ] = useState(`none`);
-  let [subCategories      , setSubCategories        ] = useState([])
+  let [subCategories      , setSubCategories        ] = useState([]);
   let [selectedSubCategory, setSelectedSubCategory  ] = useState(`none`);
+
+  useEffect(() => {
+    if (edit) {
+      setSelectedCategory(editableData.category);
+      setSelectedSubCategory(editableData.subcategory);
+      setImageSrc(`http://localhost:8000/images/products/thumbnails/${editableData.thumbnail}`);
+    } else {
+      setSelectedCategory(`none`);
+      setSelectedSubCategory(`none`);
+      setImageSrc(defaultImage)
+    }
+  }, [editableData, edit])
+  
 
   useEffect(() => {
 
     axios.get(`http://localhost:8000/api/subcategories?category=${selectedCategory}`).then((res) => {
       setSubCategories(res.data.data.subcategories);
-      setSelectedSubCategory(`none`)
+      if(edit){
+        setSelectedSubCategory(editableData.subcategory)
+      } else{
+        setSelectedSubCategory(`none`)
+      }
     })
 
   }, [selectedCategory])
@@ -54,7 +69,7 @@ export const AddOrEditModal = ({editableData}) => {
 
   return (
     <div className={modal == false ? 'hidden' : 'bg-black bg-opacity-50 absolute top-0 right-0 w-screen h-screen z-10 flex'}>
-        <div className='flex self-center m-auto bg-white flex-col p-2 rounded-xl'>
+        <div className='flex self-center m-auto bg-white flex-col p-4 rounded-xl'>
           
 {/* Header */}
 
@@ -70,28 +85,50 @@ export const AddOrEditModal = ({editableData}) => {
             <ThemeProvider theme={theme}>
               <form onSubmit={(e) => {
                 e.preventDefault();
-
-                console.log(e.target.elements);
                 
                 let formData = new FormData();
+
+                if (e.target.elements.thumbnail.value){
+                  formData.append('thumbnail'   , e.target.elements.thumbnail.files[0]);
+                }
+
+                if (e.target.elements.images.value){
+                  formData.append('images', e.target.elements.images.files[0]);
+                }
                 
                 formData.append('name'        , e.target.elements.name.value);
                 formData.append('category'    , selectedCategory);
                 formData.append('subcategory' , selectedSubCategory);
                 formData.append('description' , e.target.elements.description.value);
-                formData.append('thumbnail'   , e.target.elements.thumbnail.files[0]);
-                formData.append('images'      , e.target.elements.image.files[0]);
                 formData.append('price'       , e.target.elements.price.value);
                 formData.append('brand'       , e.target.elements.brand.value);
                 formData.append('quantity'    , e.target.elements.quantity.value);
+
+                if (edit){
+
+                  axios.patch(`http://localhost:8000/api/products/${editableData._id}`, formData)
+                  .then(response => {
+                    console.log(response.data);
+                    setModal(false);
+                    setUpdateList(!updateList);
+                  })
+                  .catch(error => {
+                    console.log(error.response.data);
+                  });
+
+                } else {
                 
-                axios.post('http://localhost:8000/api/products', formData)
-                .then(response => {
-                  console.log(response.data);
-                })
-                .catch(error => {
-                  console.log(error);
-                });
+                  axios.post('http://localhost:8000/api/products', formData)
+                  .then(response => {
+                    console.log(response.data);
+                    setModal(false);
+                    setUpdateList(!updateList);
+                  })
+                  .catch(error => {
+                    console.log(error.response.data);
+                  });
+                }
+
                 
                 
               }}>
@@ -100,12 +137,12 @@ export const AddOrEditModal = ({editableData}) => {
 
                   <div className='ml-2 w-full'>
 
-                    <TextField type='text' variant="outlined" id='name' label="نام کالا" fullWidth value={edit ? editableData.name : ``}/>
+                    <TextField type='text' variant="outlined" id='name' label="نام کالا" fullWidth multiline rows={1} defaultValue={edit ? editableData.name : ``} />
 
                     <div className='my-2'>
                     
                     <Select name="categoty" id="categoty" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as string)} fullWidth>
-                      <MenuItem value="none">لطفا یک دسته بندی را انتخاب کنید</MenuItem>
+                      <MenuItem value="none" disabled>لطفا یک دسته بندی را انتخاب کنید</MenuItem>
                       {categories.map((category) => (
                         <MenuItem value={category._id} key={category._id}>{category.name}</MenuItem>
                         ))}
@@ -115,9 +152,9 @@ export const AddOrEditModal = ({editableData}) => {
                     <div className='my-2'>
 
                     <Select name="subCategoty" id="subCategoty" value={selectedSubCategory} onChange={(e) => setSelectedSubCategory(e.target.value as string)} fullWidth>
-                      <MenuItem value="none">لطفا یک زیرمجموعه را انتخاب کنید</MenuItem>
+                      <MenuItem value="none" disabled>لطفا یک زیرمجموعه را انتخاب کنید</MenuItem>
                       {subCategories.map((subCategory) => (
-                        <MenuItem value={subCategory._id}>{subCategory.name}</MenuItem>
+                        <MenuItem value={subCategory._id} key={subCategory._id}>{subCategory.name}</MenuItem>
                         ))}
                     </Select>
                     
@@ -129,27 +166,28 @@ export const AddOrEditModal = ({editableData}) => {
                       multiline
                       rows={8}
                       fullWidth
+                      defaultValue={edit ? editableData.description : ``}
                     />
 
                     <div className='my-2'>
-                      <TextField type="text" name='brand' id='brand' placeholder='برند' fullWidth />
+                      <TextField id='brand' label="برند" fullWidth multiline defaultValue={edit ? editableData.brand : ``}/>
                     </div>
 
                   </div>
 
                   <div className='w-96'>
 
-                    <img src={imageSrc} alt="Default Image" className='rounded-md' />
+                    <img src={imageSrc} alt="Default Image" className='rounded-md shadow-md' />
 
                     <label htmlFor="image">تصویر پیش نمایش</label>
                     <input type='file' id='thumbnail' name='thumbnail' accept='image/png, image/jpeg, image/webp' multiple className='my-2 w-full' onChange={(e) => showImage(e)} />
 
                     <label htmlFor="image">تصویر اصلی</label>
-                    <input type='file' id='image' name='image' accept='image/png, image/jpeg, image/webp' multiple className='my-2 w-full' />
+                    <input type='file' id='images' name='images' accept='image/png, image/jpeg, image/webp' multiple className='my-2 w-full' />
                     
-                    <TextField type="number" name='price' id='price' placeholder='قیمت' fullWidth />
+                    <TextField type="number" name='price' label="قیمت" id='price' fullWidth multiline defaultValue={edit ? editableData.price : ``}/>
                     <div className='my-2'>
-                      <TextField type="number" name='quantity' id='quantity' placeholder='مقدار' fullWidth />
+                      <TextField type="number" name='quantity' label="تعداد" id='quantity' fullWidth multiline defaultValue={edit ? editableData.quantity : ``} />
                     </div>
 
                   </div>
@@ -159,7 +197,6 @@ export const AddOrEditModal = ({editableData}) => {
                 <button type='submit' className='text-xl w-full bg-red-600 text-white mt-2 py-1 rounded-md'>افزودن</button>
               </form>
             </ThemeProvider>
-
 
         </div>
     </div>
