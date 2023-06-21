@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
-import { Button, IconButton, ThemeProvider, createTheme } from '@mui/material';
+import { Alert, Button, IconButton, Snackbar, ThemeProvider, createTheme } from '@mui/material';
 import { blue } from '@mui/material/colors';
 import { HandleDelete } from '../../../../modules/HandleDelete';
 import { useData } from '../../../../Context/Context';
@@ -9,7 +9,7 @@ import { AddOrEditModal } from './ProductsTabComponents/AddOrEditModal';
 
 export function ProductsTab() {
 
-  let {updateList, setUpdateList, setModal} = useData();
+  let {updateList, setUpdateList, setModal, open, setOpen} = useData();
   
   const [rows       , setRows     ] = useState([]);
   const [rowCount   , setRowCount ] = useState(0);
@@ -133,13 +133,25 @@ export function ProductsTab() {
         rowSelection={false}
         disableColumnMenu
         />
-    <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex' onClick={() => {setModal(true), setEditableData({})}}>
-      <ion-icon name="add-circle-outline" class="text-2xl font-bold ml-2"></ion-icon>
-      <p>
-        افزودن کالا
-      </p>
-    </button>
-    <AddOrEditModal editableData={editableData}/>
+      <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex' onClick={() => {setModal(true), setEditableData({})}}>
+        <ion-icon name="add-circle-outline" class="text-2xl font-bold ml-2"></ion-icon>
+        <p>
+          افزودن کالا
+        </p>
+      </button>
+      <AddOrEditModal editableData={editableData}/>
+      <Snackbar
+        open={open}
+        autoHideDuration={4000}
+        onClose={() => {setOpen(false)}}
+        anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+        >
+        <Alert severity='success' elevation={6} variant='filled'>
+          <p className='text-lg mr-2'>
+            دیتابیس با موفقیت آپدیت شد
+          </p>
+        </Alert>
+      </Snackbar>
     </div>
     </ThemeProvider>
   );

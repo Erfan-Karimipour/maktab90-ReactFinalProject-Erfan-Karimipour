@@ -10,12 +10,23 @@ export const AddOrEditModal = ({editableData}) => {
   let edit = false;
   if (Object.keys(editableData).length > 0) edit = true;
   
-  let {modal, setModal, categories, updateList, setUpdateList} = useData();
+  let {modal, setModal, categories, updateList, setUpdateList, setOpen} = useData();
 
   let [imageSrc           , setImageSrc             ] = useState(defaultImage);
   let [selectedCategory   , setSelectedCategory     ] = useState(`none`);
   let [subCategories      , setSubCategories        ] = useState([]);
   let [selectedSubCategory, setSelectedSubCategory  ] = useState(`none`);
+  let [errors             , setErrors               ] = useState({
+    name        : false,
+    category    : false,
+    subCategory : false,
+    description : false,
+    brand       : false,
+    price       : false,
+    quantity    : false,
+    thumbnail   : false,
+    images      : false
+  })
 
   useEffect(() => {
     if (edit) {
@@ -66,6 +77,86 @@ export const AddOrEditModal = ({editableData}) => {
     }
   }
 
+  let nameErr   = false;
+  let catErr    = false;
+  let subCatErr = false;
+  let descErr   = false;
+  let priceErr  = false;
+  let brandErr  = false;
+  let quanErr   = false;
+  let thumbErr  = false;
+  let imagesErr = false;
+  function handleBack(e){
+    e.preventDefault();
+
+    if (!e.target.elements.name.value){nameErr = true} else {nameErr = false};
+    if (selectedCategory == `none`) {catErr = true} else {catErr = false};
+    if (selectedSubCategory == `none`) {subCatErr = true} else {subCatErr = false};
+    if (!e.target.elements.description.value) {descErr = true} else {descErr = false};
+    if (!e.target.elements.price.value) {priceErr = true} else {priceErr = false};
+    if (!e.target.elements.brand.value) {brandErr = true} else {brandErr = false};
+    if (!e.target.elements.quantity.value) {quanErr = true} else {quanErr = false};
+
+    setErrors({
+      name        : nameErr,
+      category    : catErr,
+      subCategory : subCatErr,
+      description : descErr,
+      brand       : brandErr,
+      priceErr    : priceErr,
+      quantity    : quanErr,
+      thumbnail   : thumbErr,
+      images      : imagesErr
+    })
+
+    console.log(errors);
+
+    let formData = new FormData();
+
+    if (e.target.elements.thumbnail.value){
+      formData.append('thumbnail'   , e.target.elements.thumbnail.files[0]);
+    }
+
+    if (e.target.elements.images.value){
+      formData.append('images', e.target.elements.images.files[0]);
+    }
+    
+    formData.append('name'        , e.target.elements.name.value);
+    formData.append('category'    , selectedCategory);
+    formData.append('subcategory' , selectedSubCategory);
+    formData.append('description' , e.target.elements.description.value);
+    formData.append('price'       , e.target.elements.price.value);
+    formData.append('brand'       , e.target.elements.brand.value);
+    formData.append('quantity'    , e.target.elements.quantity.value);
+
+    if (edit){
+
+      axios.patch(`http://localhost:8000/api/products/${editableData._id}`, formData)
+      .then(response => {
+        console.log(response.data);
+        setModal(false);
+        setUpdateList(!updateList);
+        setOpen(true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    } else {
+    
+      axios.post('http://localhost:8000/api/products', formData)
+      .then(response => {
+        console.log(response.data);
+        setModal(false);
+        setUpdateList(!updateList);
+        setOpen(true);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
+  }
+  
 
   return (
     <div className={modal == false ? 'hidden' : 'bg-black bg-opacity-50 absolute top-0 right-0 w-screen h-screen z-10 flex'}>
@@ -83,65 +174,17 @@ export const AddOrEditModal = ({editableData}) => {
 {/* Main */}
 
             <ThemeProvider theme={theme}>
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                
-                let formData = new FormData();
-
-                if (e.target.elements.thumbnail.value){
-                  formData.append('thumbnail'   , e.target.elements.thumbnail.files[0]);
-                }
-
-                if (e.target.elements.images.value){
-                  formData.append('images', e.target.elements.images.files[0]);
-                }
-                
-                formData.append('name'        , e.target.elements.name.value);
-                formData.append('category'    , selectedCategory);
-                formData.append('subcategory' , selectedSubCategory);
-                formData.append('description' , e.target.elements.description.value);
-                formData.append('price'       , e.target.elements.price.value);
-                formData.append('brand'       , e.target.elements.brand.value);
-                formData.append('quantity'    , e.target.elements.quantity.value);
-
-                if (edit){
-
-                  axios.patch(`http://localhost:8000/api/products/${editableData._id}`, formData)
-                  .then(response => {
-                    console.log(response.data);
-                    setModal(false);
-                    setUpdateList(!updateList);
-                  })
-                  .catch(error => {
-                    console.log(error.response.data);
-                  });
-
-                } else {
-                
-                  axios.post('http://localhost:8000/api/products', formData)
-                  .then(response => {
-                    console.log(response.data);
-                    setModal(false);
-                    setUpdateList(!updateList);
-                  })
-                  .catch(error => {
-                    console.log(error.response.data);
-                  });
-                }
-
-                
-                
-              }}>
+              <form onSubmit={(e) => handleBack(e)}>
 
                 <div className='flex justify-between w-[26vw]'>
 
                   <div className='ml-2 w-full'>
 
-                    <TextField type='text' variant="outlined" id='name' label="نام کالا" fullWidth multiline rows={1} defaultValue={edit ? editableData.name : ``} />
+                    <TextField type='text' variant="outlined" error={errors.name == true ? true : false} helperText={errors.name == true ? `لطفا نام کالا را وارد کنید` : ``} id='name' label="نام کالا" fullWidth multiline rows={1} defaultValue={edit ? editableData.name : ``} />
 
                     <div className='my-2'>
                     
-                    <Select name="categoty" id="categoty" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as string)} fullWidth>
+                    <Select name="categoty" id="categoty" error={errors.categoty == true ? true : false} value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value as string)} fullWidth>
                       <MenuItem value="none" disabled>لطفا یک دسته بندی را انتخاب کنید</MenuItem>
                       {categories.map((category) => (
                         <MenuItem value={category._id} key={category._id}>{category.name}</MenuItem>
@@ -151,7 +194,7 @@ export const AddOrEditModal = ({editableData}) => {
                     </div>
                     <div className='my-2'>
 
-                    <Select name="subCategoty" id="subCategoty" value={selectedSubCategory} onChange={(e) => setSelectedSubCategory(e.target.value as string)} fullWidth>
+                    <Select name="subCategoty" id="subCategoty" error={errors.subCategoty == true ? true : false} value={selectedSubCategory} onChange={(e) => setSelectedSubCategory(e.target.value as string)} fullWidth>
                       <MenuItem value="none" disabled>لطفا یک زیرمجموعه را انتخاب کنید</MenuItem>
                       {subCategories.map((subCategory) => (
                         <MenuItem value={subCategory._id} key={subCategory._id}>{subCategory.name}</MenuItem>
@@ -161,6 +204,7 @@ export const AddOrEditModal = ({editableData}) => {
                     </div>
 
                     <TextField
+                      error={errors.description == true ? true : false} helperText={errors.description == true ? `لطفا توضیحات محصول را وارد کنید` : ``}
                       id="description"
                       label="توضیحات محصول"
                       multiline
@@ -170,7 +214,7 @@ export const AddOrEditModal = ({editableData}) => {
                     />
 
                     <div className='my-2'>
-                      <TextField id='brand' label="برند" fullWidth multiline defaultValue={edit ? editableData.brand : ``}/>
+                      <TextField id='brand' label="برند" fullWidth multiline defaultValue={edit ? editableData.brand : ``} error={errors.brand == true ? true : false} helperText={errors.brand == true ? `لطفا برند محصول را وارد کنید` : ``}/>
                     </div>
 
                   </div>
@@ -185,9 +229,9 @@ export const AddOrEditModal = ({editableData}) => {
                     <label htmlFor="image">تصویر اصلی</label>
                     <input type='file' id='images' name='images' accept='image/png, image/jpeg, image/webp' multiple className='my-2 w-full' />
                     
-                    <TextField type="number" name='price' label="قیمت" id='price' fullWidth multiline defaultValue={edit ? editableData.price : ``}/>
+                    <TextField type="number" name='price' label="قیمت" id='price' fullWidth multiline defaultValue={edit ? editableData.price : ``} error={errors.price == true ? true : false} helperText={errors.price == true ? `لطفا قیمت محصول را وارد کنید` : ``}/>
                     <div className='my-2'>
-                      <TextField type="number" name='quantity' label="تعداد" id='quantity' fullWidth multiline defaultValue={edit ? editableData.quantity : ``} />
+                      <TextField type="number" name='quantity' label="تعداد" id='quantity' fullWidth multiline defaultValue={edit ? editableData.quantity : ``} error={errors.quantity == true ? true : false} helperText={errors.quantity == true ? `لطفا تعداد محصول را وارد کنید` : ``} />
                     </div>
 
                   </div>
