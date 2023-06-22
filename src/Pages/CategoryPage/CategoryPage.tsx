@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const ProductGroupPage = () => {
+export const CategoryPage = () => {
   return (
     <div>ProductGroupPage</div>
   )

@@ -41,11 +41,21 @@ export const ShoppingCart = ({product}) => {
             <p className='mr-1'>تومان</p>
           </span>
         </div>
+        <div className='flex justify-center'>
+          <div className='flex flex-col items-center text-sm ml-2 text-white bg-red-500 rounded-l-xl px-1 pt-1 h-fit'>
 
+            <button onClick={() => {if(quan < product.quantity) setQuan(quan + 1)}}>
+              <ion-icon name="caret-up-outline"></ion-icon>
+            </button>
 
-        <div>
-          
-          <button className='flex text-lg mb-5 font-bold bg-red-500 m-auto my-2 py-2 px-12 rounded-md text-white hover:bg-red-600 duration-100'>افزودن به سبد خرید</button>
+            <span className='pointer-events-none'>{quan}</span>
+
+            <button onClick={() => {if(quan > 1)                setQuan(quan - 1)}}>
+              <ion-icon name="caret-down-outline"></ion-icon>
+            </button>
+            
+          </div>
+          <button className='flex m-auto text-lg mb-5 font-bold bg-red-500 my-2 py-2 px-12 rounded-md text-white hover:bg-red-600 duration-100'>افزودن به سبد خرید</button>
         </div>
       </div>
         
