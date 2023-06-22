@@ -3,7 +3,7 @@ import { useData } from '../../../../Context/Context';
 import axios from 'axios';
 import { Pagination, Stack, ThemeProvider, createTheme } from '@mui/material';
 
-export const ProductSection = (cat) => {
+export const ProductSection = ({cat, subCat, limit}) => {
   let {products   , setProducts   } = useData();
   let [page       , setPage       ] = useState(1);
   let [totalPages , setTotalPages ] = useState(0);
@@ -12,13 +12,24 @@ export const ProductSection = (cat) => {
     direction: 'rtl',
   })
 
+  let path = `http://localhost:8000/api/products?page=${page}`
 
-  if (!cat) cat = "any";
+  if (cat)     {
+    path = path + `&category=${cat}`
+  }
+  if (subCat)  {
+    path = path + `&subcategory=${subCat}`
+    console.log(`subber`);
+  }
+  if (limit)   {
+    path = path + `&limit=${limit}`
+  }
+  
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/products?page=${page}`).then((res) => { 
+    axios.get(path).then((res) => { 
         setProducts(res.data.data.products);
-        setTotalPages(res.data.total_pages)
+        setTotalPages(res.data.total_pages);
     })
   },[page])
 
@@ -41,7 +52,7 @@ export const ProductSection = (cat) => {
 ))}
 
     </div>
-    <div className='m-auto mt-6'>
+    <div className={subCat ? 'hidden' : 'm-auto mt-6'} >
       <ThemeProvider theme={theme}>
         <Stack>
           <Pagination count={totalPages} onChange={(e, value) => {

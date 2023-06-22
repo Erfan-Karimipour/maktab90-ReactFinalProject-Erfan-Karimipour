@@ -4,6 +4,8 @@ import { Header } from '../../Layout/Header'
 import axios from 'axios'
 import { ShoppingCart } from './productPageComponents/ShoppingCart'
 import { InfoAndImage } from './productPageComponents/InfoAndImage'
+import { SimilarProducts } from './productPageComponents/SimilarProducts'
+import { Footer } from '../../Layout/Footer'
 
 export const ProductPage = () => {
   let { id } = useParams<{id: string}>()
@@ -22,10 +24,14 @@ if (product.name){
   return (
     <>
       <Header />
-      <div className='flex mx-20 mt-16'>
-        <InfoAndImage product={product} />
-        <ShoppingCart product={product} />
+      <div className='mx-20 mt-16'>
+        <div className='flex'>
+          <InfoAndImage     product={product} />
+          <ShoppingCart     product={product} />
+        </div>
+        <SimilarProducts  product={product} />
       </div>
+      <Footer />
     </>
   )
 }

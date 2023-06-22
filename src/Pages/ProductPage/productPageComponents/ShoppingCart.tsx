@@ -1,6 +1,18 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 
 export const ShoppingCart = ({product}) => {
+
+  let [similarProducts, setSimilarProducts] = useState({});
+  let [quan           , setQuan           ] = useState(1);
+
+  useEffect(() => {
+    axios.get(`http://localhost:8000/api/products?subcategory=${product.subcategory._id}`).then((res) => {
+      setSimilarProducts(res.data.data.products)
+    })
+
+  }, [])
+
   return (
     <div className='p-10'>
       <div className='mt-56 shadow-md border border-gray-300 w-[20vw] rounded-xl top-[30%] translate-y-[-50%] bg-gray-100'>
@@ -30,9 +42,13 @@ export const ShoppingCart = ({product}) => {
           </span>
         </div>
 
-        <button className='flex text-lg mb-5 font-bold bg-red-500 m-auto my-2 py-2 px-12 rounded-md text-white hover:bg-red-600 duration-100'>افزودن به سبد خرید</button>
 
+        <div>
+          
+          <button className='flex text-lg mb-5 font-bold bg-red-500 m-auto my-2 py-2 px-12 rounded-md text-white hover:bg-red-600 duration-100'>افزودن به سبد خرید</button>
+        </div>
       </div>
+        
     </div>
   )
 }
