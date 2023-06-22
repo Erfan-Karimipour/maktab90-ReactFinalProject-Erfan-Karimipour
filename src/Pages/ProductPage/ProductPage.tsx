@@ -12,8 +12,12 @@ export const ProductPage = () => {
   useEffect(() => {
     axios.get(`http://localhost:8000/api/products/${id}`).then((res) => {  
       setProduct(res.data.data.product);
+
+      
     })
   }, [])
+  
+if (product.name){
 
   return (
     <>
@@ -24,4 +28,5 @@ export const ProductPage = () => {
       </div>
     </>
   )
+}
 }

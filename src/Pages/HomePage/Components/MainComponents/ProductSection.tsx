@@ -28,7 +28,7 @@ export const ProductSection = (cat) => {
 
         {products.map((product) => (
           
-          <a className='flex flex-col border border-gray-200 items-center py-4 h-fit hover:shadow-xl duration-150 cursor-pointer m-auto hover:border hover:border-red-500' key={product._id} onClick={() => {window.open(`http://localhost:5555/product/${product._id}`, `_blank`)}} >
+          <a className='flex flex-col border h-full border-gray-200 items-center py-4 h-fit hover:shadow-xl duration-150 cursor-pointer m-auto hover:border hover:border-red-500' key={product._id} onClick={() => {window.open(`http://localhost:5555/product/${product._id}`, `_blank`)}} >
 
             <div className='h-[95%]'>
                 <img src={`http://localhost:8000/images/products/thumbnails/${product.thumbnail}`} alt={product.name} className='mb-4 p-8'/>

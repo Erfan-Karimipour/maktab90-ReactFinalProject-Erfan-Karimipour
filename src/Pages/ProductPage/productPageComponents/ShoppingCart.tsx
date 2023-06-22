@@ -3,7 +3,7 @@ import React from 'react'
 export const ShoppingCart = ({product}) => {
   return (
     <div className='p-10'>
-      <div className='m-2 shadow-md border border-gray-300 fixed w-[20vw] left-[10%] rounded-xl top-[30%] translate-y-[-50%] bg-gray-100'>
+      <div className='mt-56 shadow-md border border-gray-300 w-[20vw] rounded-xl top-[30%] translate-y-[-50%] bg-gray-100'>
         <div className='mx-3 my-5 mb-0 pb-3 border-b'>
           <p>سازنده</p>
           <span className='text-xl items-center flex mt-3'>
