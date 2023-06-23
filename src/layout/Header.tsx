@@ -5,7 +5,7 @@ import { useData } from '../Context/Context'
 
 export const Header = () => {
 
-    let {modal, setModal} = useData();
+    let {modal, setModal} = useData(); 
     console.log(modal);
     
 

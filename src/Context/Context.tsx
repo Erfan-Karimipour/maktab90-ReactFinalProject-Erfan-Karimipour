@@ -5,12 +5,12 @@ let Context = createContext({});
 
 export function Providers ({children}: {children: ReactNode}){
     let [categories     , setCategories     ] = useState([]);
-    let [subCategories  , setSubCategories  ] = useState([]);
     let [products       , setProducts       ] = useState([]);
     let [error          , setError          ] = useState(false);
     let [modal          , setModal          ] = useState(false);
     let [open           , setOpen           ] = useState(false);
     let [updateList     , setUpdateList     ] = useState(false);
+    let [selectedSubCat , setSelectedSubCat ] = useState({});
     let [adminLoginError, setAdminLoginError] = useState({  
 
         userName: false,
@@ -20,11 +20,12 @@ export function Providers ({children}: {children: ReactNode}){
     useEffect(() => {
         axios.get(`http://localhost:8000/api/categories`).then((res) => {
             setCategories(res.data.data.categories);
-        }) 
+        })
       }, [])
+
     
     return(
-        <Context.Provider value={{categories, setCategories, subCategories, setSubCategories, products, setProducts, error, setError, modal, setModal, adminLoginError, setAdminLoginError, open, setOpen, updateList, setUpdateList}}>
+        <Context.Provider value={{categories, setCategories, products, setProducts, error, setError, modal, setModal, adminLoginError, setAdminLoginError, open, setOpen, updateList, setUpdateList, selectedSubCat, setSelectedSubCat}}>
             {children}
         </Context.Provider>
     )

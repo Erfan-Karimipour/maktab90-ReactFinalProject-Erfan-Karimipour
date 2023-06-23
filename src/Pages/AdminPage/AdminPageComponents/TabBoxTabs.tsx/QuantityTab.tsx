@@ -38,11 +38,30 @@ export function QuantityTab() {
     '64758fffef56602d5ba21723' : 'قطعات کامپیوتر',
     '6475909cef56602d5ba21739' : 'لپ تاپ و تجهیزات جانبی'
   }
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#ff0000'
+      },
+      secondary: {
+        main: '#0044ff'
+      }
+    },
+    direction: "rtl"
+  })
+
+  const handleEdit = (celldata) => {
+    const {id, field, value} = celldata;
+  }
   
   return (
-    
+    <ThemeProvider theme={theme}>
+
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
+        onCellEditStop={handleEdit}
+        
         rows={rows}
         getRowId={getRowId}
         columns={[
@@ -60,38 +79,40 @@ export function QuantityTab() {
               />
               ),
             },
-          { field: 'name', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>نام کالا</p>, flex: 2, 
+            { field: 'name', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>نام کالا</p>, flex: 2, 
             renderCell: (params) => (
               <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
-            ),},
-
-          { field: 'price', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>قیمت</p>, flex: 1, editable: true, 
-            renderCell: (params) => (
-              <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
-            ),},
-
-          { field: 'quantity', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>موجودی</p>, flex: 1, editable: true,
-            renderCell: (params) => (
-              <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
-            ),},
-        ]}
-        rowCount={rowCount}
-        paginationMode="server"
-        paginationModel={paginationModel}
-        pagination={true}
-        loading={loading}
-        pageSizeOptions={[10]}
-        onPaginationModelChange={setPaginationModel}
-        editMode='cell'
+              ),},
+              
+              { field: 'price', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>قیمت</p>, flex: 1, editable: true, 
+              renderCell: (params) => (
+                <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
+                ),},
+                
+                { field: 'quantity', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>موجودی</p>, flex: 1, editable: true,
+                renderCell: (params) => (
+                  <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
+                  ),},
+                ]}
+                rowCount={rowCount}
+                paginationMode="server"
+                paginationModel={paginationModel}
+                pagination={true}
+                loading={loading}
+                pageSizeOptions={[10]}
+                onPaginationModelChange={setPaginationModel}
+                editMode='cell'
         rowSelection={false}
         disableColumnMenu
         />
-    <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex'>
+    <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex' >
       <ion-icon name="save-outline" class="text-xl font-bold ml-2"></ion-icon>
       <p>
         ذخیره
       </p>
     </button>
     </div>
+    
+    </ThemeProvider>
   );
 }
