@@ -9,7 +9,7 @@ import { AddOrEditModal } from './ProductsTabComponents/AddOrEditModal';
 
 export function ProductsTab() {
 
-  let {updateList, setUpdateList, setModal, open, setOpen} = useData();
+  let {updateList, setUpdateList, setModal, open, setOpen, modal} = useData();
   
   const [rows       , setRows     ] = useState([]);
   const [rowCount   , setRowCount ] = useState(0);
@@ -139,7 +139,8 @@ export function ProductsTab() {
           افزودن کالا
         </p>
       </button>
-      <AddOrEditModal editableData={editableData}/>
+      {modal && <AddOrEditModal editableData={editableData}/>}
+      
       <Snackbar
         open={open}
         autoHideDuration={4000}

@@ -40,15 +40,28 @@ export function QuantityTab() {
   }
 
   const theme = createTheme({
-    direction: 'rtl'
+    palette: {
+      primary: {
+        main: '#ff0000'
+      },
+      secondary: {
+        main: '#0044ff'
+      }
+    },
+    direction: "rtl"
   })
 
+  const handleEdit = (celldata) => {
+    const {id, field, value} = celldata;
+  }
   
   return (
     <ThemeProvider theme={theme}>
 
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
+        onCellEditStop={handleEdit}
+        
         rows={rows}
         getRowId={getRowId}
         columns={[
@@ -92,7 +105,7 @@ export function QuantityTab() {
         rowSelection={false}
         disableColumnMenu
         />
-    <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex'>
+    <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex' >
       <ion-icon name="save-outline" class="text-xl font-bold ml-2"></ion-icon>
       <p>
         ذخیره

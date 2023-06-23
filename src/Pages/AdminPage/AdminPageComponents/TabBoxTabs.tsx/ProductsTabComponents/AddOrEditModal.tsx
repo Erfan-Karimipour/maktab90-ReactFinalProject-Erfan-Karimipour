@@ -103,7 +103,7 @@ export const AddOrEditModal = ({editableData}) => {
       subCategory : subCatErr,
       description : descErr,
       brand       : brandErr,
-      priceErr    : priceErr,
+      price       : priceErr,
       quantity    : quanErr,
       thumbnail   : thumbErr,
       images      : imagesErr
@@ -159,14 +159,29 @@ export const AddOrEditModal = ({editableData}) => {
   
 
   return (
-    <div className={modal == false ? 'hidden' : 'bg-black bg-opacity-50 absolute top-0 right-0 w-screen h-screen z-10 flex'}>
+    <div className='bg-black bg-opacity-50 absolute top-0 right-0 w-screen h-screen z-10 flex'>
         <div className='flex self-center m-auto bg-white flex-col p-4 rounded-xl'>
           
 {/* Header */}
 
             <div className='flex text-xl items-center justify-between mb-2'>
                 <p>{edit ? 'ویرایش کالا' : 'افزودن کالا'}</p>
-                <button onClick={() => setModal(false)}>
+                <button onClick={(e) => {
+                  setModal(false);
+                  setErrors({
+                    name        : false,
+                    category    : false,
+                    subCategory : false,
+                    description : false,
+                    brand       : false,
+                    price       : false,
+                    quantity    : false,
+                    thumbnail   : false,
+                    images      : false
+                  })
+                }
+                  
+                }>
                   <ion-icon name="close-circle-outline" class="text-red-600"></ion-icon>
                 </button>
             </div>

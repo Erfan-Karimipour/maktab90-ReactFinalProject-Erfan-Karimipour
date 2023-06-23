@@ -46,6 +46,14 @@ export function OrdersTab() {
   }, [paginationModel.page, paginationModel.pageSize, showCompleted]);
 
   const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#ff0000'
+      },
+      secondary: {
+        main: '#0044ff'
+      }
+    },
     direction: "rtl"
   })
   
