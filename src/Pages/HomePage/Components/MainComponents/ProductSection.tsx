@@ -3,8 +3,8 @@ import { useData } from '../../../../Context/Context';
 import axios from 'axios';
 import { Pagination, Stack, ThemeProvider, createTheme } from '@mui/material';
 
-export const ProductSection = ({cat, subCat, limit}) => {
-  let {products   , setProducts   } = useData();
+export const  ProductSection = ({cat, subCat, limit}) => {
+  let {products, setProducts, selectedSubCat  } = useData();
   let [page       , setPage       ] = useState(1);
   let [totalPages , setTotalPages ] = useState(0);
 
@@ -19,19 +19,19 @@ export const ProductSection = ({cat, subCat, limit}) => {
   }
   if (subCat)  {
     path = path + `&subcategory=${subCat}`
-    console.log(`subber`);
-  }
+  } else 
+  
   if (limit)   {
     path = path + `&limit=${limit}`
   }
-  
 
   useEffect(() => {
     axios.get(path).then((res) => { 
         setProducts(res.data.data.products);
         setTotalPages(res.data.total_pages);
+        console.log(path);  
     })
-  },[page])
+  }, [page])
 
   return (
     <div className='flex flex-col'>
@@ -39,7 +39,7 @@ export const ProductSection = ({cat, subCat, limit}) => {
 
         {products.map((product) => (
           
-          <a className='flex flex-col border h-full border-gray-200 items-center py-4 h-fit hover:shadow-xl duration-150 cursor-pointer m-auto hover:border hover:border-red-500' key={product._id} onClick={() => {window.open(`http://localhost:5555/product/${product._id}`, `_blank`)}} >
+          <a className='flex flex-col border h-full border-gray-200 items-center py-4 hover:shadow-xl duration-150 cursor-pointer m-auto hover:border hover:border-red-500' key={product._id} onClick={() => {window.open(`http://localhost:5555/product/${product._id}`, `_blank`)}} >
 
             <div className='h-[95%]'>
                 <img src={`http://localhost:8000/images/products/thumbnails/${product.thumbnail}`} alt={product.name} className='mb-4 p-8'/>

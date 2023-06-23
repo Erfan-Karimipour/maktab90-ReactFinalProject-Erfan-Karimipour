@@ -33,7 +33,7 @@ export const Categories = () => {
                     if(subCat.category == category._id){
                       return (
                         <p className='py-2 px-2 border-t hover:bg-gray-100' onClick={() => {
-                          window.open(`/subcategory/${subCat._id}`)
+                          window.open(`/subcategory/${subCat._id}`);
                         }}>{subCat.name}</p>
                       )
                     }
