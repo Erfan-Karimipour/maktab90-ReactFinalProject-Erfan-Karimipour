@@ -7,7 +7,7 @@ export const ContactUs = () => {
       <p className='font-bold my-2'>تماس با ما</p>
       <div className='flex flex-col items-end w-full'>
         <p className='flex items-center'>
-          <Link to={'https://mail.google.com/mail/u/0/#inbox?compose=CllgCJvqsKchzFSsbdKpmnKswCGbCmLbdZmVvlGNnDPPFPDghdQHTVrdwRXtbHjSGmBxCRTQtDV'}>Programming1402@gmail.com</Link>
+          <Link to={'https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSDXXffLnVQHRzCpgLXdNmCkNWVpFhHNWBpkPzlCGvRvtHFLBlQjggTqQFPzBDzHWrNhjNNz'}>E.Karimipour.Contact@gmail.com</Link>
           <ion-icon name="mail-outline" class="mr-2"></ion-icon>
         </p>
         <p className='flex items-center'>

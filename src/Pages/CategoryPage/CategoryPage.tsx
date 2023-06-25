@@ -26,7 +26,6 @@ export const CategoryPage = () => {
       <Categories />
       <div className='my-10 flex justify-center'>
         <div className='h-fit border-l rounded-bl-md'>
-
         <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
           <p className='w-full text-center border-b pb-2 text-red-500'>مجموعه ها</p>
           <Tabs centered orientation='vertical'>

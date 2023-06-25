@@ -19,7 +19,7 @@ export const  ProductSection = ({cat, subCat, limit}) => {
   }
   if (subCat)  {
     path = path + `&subcategory=${subCat}`
-  } else 
+  }
   
   if (limit)   {
     path = path + `&limit=${limit}`
@@ -31,7 +31,8 @@ export const  ProductSection = ({cat, subCat, limit}) => {
         setTotalPages(res.data.total_pages);
         console.log(path);  
     })
-  }, [page])
+  }, [page, path])
+  
 
   return (
     <div className='flex flex-col'>
@@ -52,7 +53,7 @@ export const  ProductSection = ({cat, subCat, limit}) => {
 ))}
 
     </div>
-    <div className={subCat ? 'hidden' : 'm-auto mt-6'} >
+    <div className={subCat || totalPages <= 1 ? 'hidden' : 'm-auto mt-6'} >
       <ThemeProvider theme={theme}>
         <Stack>
           <Pagination count={totalPages} onChange={(e, value) => {
