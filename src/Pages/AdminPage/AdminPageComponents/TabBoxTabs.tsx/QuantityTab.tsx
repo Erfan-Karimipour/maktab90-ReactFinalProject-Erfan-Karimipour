@@ -1,11 +1,17 @@
 import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
-import { Button, IconButton, ThemeProvider, createTheme } from '@mui/material';
+import { Alert, Button, IconButton, Snackbar, ThemeProvider, createTheme } from '@mui/material';
 import { StyledButton } from '@nextui-org/react';
 import { blue } from '@mui/material/colors';
+import { HandleEditRows } from '../../../../modules/handleEditRows';
+import { useData } from '../../../../Context/Context';
 
 export function QuantityTab() {
+
+  let {updateList, setUpdateList, open, setOpen} = useData();
+  let EditingField = ``;
+  let Edits        = [];
 
   const [paginationModel, setPaginationModel] = React.useState({
     page: 0,
@@ -30,7 +36,7 @@ export function QuantityTab() {
         setRowCount(total);
         setLoading(false);
       });
-  }, [paginationModel.page, paginationModel.pageSize]);
+  }, [paginationModel.page, paginationModel.pageSize, updateList]);
 
   const categories = {
     '64758e62ef56602d5ba216fd': 'کامپیوتر و مانیتور',
@@ -61,7 +67,6 @@ export function QuantityTab() {
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
         onCellEditStop={handleEdit}
-        
         rows={rows}
         getRowId={getRowId}
         columns={[
@@ -94,6 +99,24 @@ export function QuantityTab() {
                   <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
                   ),},
                 ]}
+                onCellEditStart={(e) => {
+                  EditingField = e.field
+                }}
+                processRowUpdate={(e) => {
+                  let newEdit = {};
+                  if (EditingField == 'price'){
+                    newEdit = {
+                      _id         : e._id,
+                      price       : e.price
+                    }
+                  } else {
+                    newEdit = {
+                      _id         : e._id,
+                      quantity    : e.quantity
+                    }
+                  }
+                  Edits.push(newEdit);
+                }}
                 rowCount={rowCount}
                 paginationMode="server"
                 paginationModel={paginationModel}
@@ -105,13 +128,25 @@ export function QuantityTab() {
         rowSelection={false}
         disableColumnMenu
         />
-    <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex' >
+    <button className='m-2 p-2 bg-red-600 text-white rounded-md font-bold flex' onClick={() => {HandleEditRows(Edits); if(Edits.length > 0) {setUpdateList(!updateList); setOpen(true)}}} >
       <ion-icon name="save-outline" class="text-xl font-bold ml-2"></ion-icon>
       <p>
         ذخیره
       </p>
     </button>
     </div>
+    <Snackbar
+      open={open}
+      autoHideDuration={4000}
+      onClose={() => {setOpen(false)}}
+      anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+      >
+      <Alert severity='success' elevation={6} variant='filled'>
+        <p className='text-lg mr-2'>
+          دیتابیس با موفقیت آپدیت شد
+        </p>
+      </Alert>
+    </Snackbar>
     
     </ThemeProvider>
   );
