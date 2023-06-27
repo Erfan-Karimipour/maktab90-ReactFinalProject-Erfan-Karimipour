@@ -2,8 +2,6 @@ import { Rating } from '@mui/material';
 import React from 'react'
 
 export const InfoAndImage = ({product}) => {
-  console.log(product);
-
 
 
   return (
@@ -14,9 +12,9 @@ export const InfoAndImage = ({product}) => {
         <div>
           <p className='text-xl border-b pb-2 mb-2'>{product.name}</p>
           <div className='flex items-center'>
-            <button className='text-blue-600 mx-1'>{product.category.name}</button>
+            <button className='text-blue-600 mx-1' onClick={() => window.open(`/category/${product.category._id}`)}>{product.category.name}</button>
             <ion-icon name="caret-back-outline" class="text-gray-900"></ion-icon>
-            <button className='text-blue-600 mx-1'>{product.subcategory.name}</button>
+            <button className='text-blue-600 mx-1' onClick={() => window.open(`/subcategory/${product.subcategory._id}`)}>{product.subcategory.name}</button>
           </div>
           <div className='flex mt-1 mb-10 mr-1 justify-between'>
             <div className='flex'>

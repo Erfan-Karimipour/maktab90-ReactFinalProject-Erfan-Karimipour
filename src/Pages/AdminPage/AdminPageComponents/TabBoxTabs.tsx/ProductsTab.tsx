@@ -11,9 +11,10 @@ export function ProductsTab() {
 
   let {updateList, setUpdateList, setModal, open, setOpen, modal} = useData();
   
-  const [rows       , setRows     ] = useState([]);
-  const [rowCount   , setRowCount ] = useState(0);
-  const [loading    , setLoading  ] = useState(true);
+  const [rows       , setRows       ] = useState([]);
+  const [rowCount   , setRowCount   ] = useState(0);
+  const [loading    , setLoading    ] = useState(true);
+  let   [deleteModal, setDeleteModal] = useState('');
 
   const categories = {
     '64758e62ef56602d5ba216fd': 'کامپیوتر و مانیتور',
@@ -57,9 +58,37 @@ export function ProductsTab() {
 
   let [editableData, setEditableData] = useState({});
 
+  let [openDeleteSnack, setOpenDeleteSnack] = useState(false);
 
   return (
     <ThemeProvider theme={theme}>
+
+    <div className={deleteModal ? 'absolute top-0 bottom-0 left-0 right-0 z-10 bg-black bg-opacity-40 duration-100' : 'opacity-0 pointer-events-none duration-200'}>
+
+      <div className={deleteModal ? 'absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] duration-100 bg-white w-1/5 flex flex-col items-center py-10 rounded-md' : 'hidden'}>
+
+        <p className='mb-5 text-xl'>آیا از حذف اطمینان دارید؟</p>
+
+        <div className='text-lg flex gap-14'>
+
+          <button className='bg-red-500 px-7 py-2 text-white rounded-md' onClick={() => {
+            HandleDelete(deleteModal); 
+            setUpdateList(updateList + 1);
+            axios.get(`http://localhost:8000/api/products?page=${paginationModel.page+1}`).then((res) => {
+              setRows(res.data.data.products);
+              setUpdateList(!updateList);
+            })
+            setDeleteModal(``);
+            setOpenDeleteSnack(true);
+          }}>حذف</button>
+
+          <button className='bg-blue-500 px-7 py-2 text-white rounded-md' onClick={() => {
+            setDeleteModal(``);
+          }}>انصراف</button>
+
+        </div>
+      </div>
+    </div>
 
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
@@ -103,12 +132,7 @@ export function ProductsTab() {
                   
                   <div>
                   <Button style={{ fontFamily: 'vazir' }} id={params.value} onClick={(e) => {
-                    HandleDelete(e); 
-                    setUpdateList(updateList + 1);
-                    axios.get(`http://localhost:8000/api/products?page=${paginationModel.page+1}`).then((res) => {
-                      setRows(res.data.data.products);
-                      setUpdateList(!updateList);
-                    })
+                    setDeleteModal(e.target.id)
                   }}>
                     حذف
                     <ion-icon name="trash-outline" class="mr-2 text-lg"></ion-icon>
@@ -150,6 +174,18 @@ export function ProductsTab() {
         <Alert severity='success' elevation={6} variant='filled'>
           <p className='text-lg mr-2'>
             دیتابیس با موفقیت آپدیت شد
+          </p>
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openDeleteSnack}
+        autoHideDuration={4000}
+        onClose={() => {setOpenDeleteSnack(false)}}
+        anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+      >
+        <Alert severity='success' elevation={6} variant='filled'>
+          <p className='text-lg mr-2'>
+            محصول با موفقیت حذف شد
           </p>
         </Alert>
       </Snackbar>

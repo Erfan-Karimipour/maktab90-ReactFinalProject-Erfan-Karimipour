@@ -21,20 +21,18 @@ export const SubCategoryPage = () => {
   let { id } = useParams<{id: string}>()
 
   let [subCategories, setSubCategories] = useState([]);
-  let [cat , setCat] = useState(`
-    
-  `)
+  let [cat , setCat] = useState(``);
+  let [selectedSub, setSelectedSub] = useState(id)
 
   useEffect(() => {
     axios.get(`http://localhost:8000/api/subcategories/${id}`).then((res) => {
-        console.log(res.data.data.subcategory.category._id);
         setCat(res.data.data.subcategory.category._id);
     })
+
     axios.get(`http://localhost:8000/api/subcategories?limit=null`).then((res) => {
-        console.log(res.data.data.subcategories);
         setSubCategories(res.data.data.subcategories);
     })
-    }, [])
+    }, [selectedSub])
   
   return (
     <>
@@ -45,12 +43,12 @@ export const SubCategoryPage = () => {
         <ThemeProvider theme={theme}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
         <p className='w-full text-center border-b pb-2 text-red-500'>مجموعه ها</p>
-          <Tabs centered orientation='vertical' value={id}>
+          <Tabs centered orientation='vertical' value={selectedSub}>
 
             {subCategories.map((subCat) => {
                 if(subCat.category == cat){
                     return (
-                        <Tab label={subCat.name} value={subCat._id} id={subCat._id} style={{fontSize: 18, fontFamily: "vazir"}}  key={subCat._id} onClick={(e) => {window.open(`/subcategory/${subCat._id}`, `_self`)}}/>
+                        <Tab label={subCat.name} value={subCat._id} id={subCat._id} style={{fontSize: 18, fontFamily: "vazir"}}  key={subCat._id} onClick={(e) => {setSelectedSub(subCat._id)}}/>
                         )
                     }
                 })}
@@ -58,7 +56,7 @@ export const SubCategoryPage = () => {
         </Box>
         </ThemeProvider>        
         </div>
-        <ProductSection subCat={id}/>
+        <ProductSection subCat={selectedSub}/>
       </div>
       <Footer />
     </>
