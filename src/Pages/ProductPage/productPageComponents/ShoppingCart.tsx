@@ -64,8 +64,11 @@ export const ShoppingCart = ({product}) => {
             let carts = JSON.parse(localStorage.getItem(`Carts`));
             if (!carts) carts = [];
             let newCart = {
-              id      : product._id,
-              quantity: quan
+              id        : product._id,
+              quantity  : quan,
+              price     : product.price,
+              name      : product.name,
+              thumbnail : product.thumbnail
             }
 
             //Checks if the cart already exists, and if it does, adds the new quantity to it instead of adding a new cart
