@@ -50,7 +50,7 @@ export const ShoppingCartPage = () => {
               <p>مجموع قیمت</p>
               <span>{total}</span>
             </div>
-            <Link to={'/Info'} className='font-bold text-white bg-green-500 mt-10 py-3 rounded-md w-full text-center hover:bg-green-600 duration-100'>
+            <Link to={'/Info'} className='font-bold text-white bg-green-500 mt-10 py-3 rounded-md w-full text-center hover:bg-green-600 duration-100' onClick={() => localStorage.setItem(`Price`, JSON.stringify(total))}>
               نهایی کردن خرید
             </Link>
 

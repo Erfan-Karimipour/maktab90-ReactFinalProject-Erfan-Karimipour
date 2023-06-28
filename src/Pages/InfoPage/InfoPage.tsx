@@ -44,7 +44,7 @@ export const InfoPage = () => {
     if (e[0].value.length < 2  || /\d/.test(e[0].value      )){name      = true} else {name      = false}
     if (e[2].value.length < 2  || /\d/.test(e[2].value      )){familyName= true} else {familyName= false}
     if (e[4].value.length < 10                               ){address   = true} else {address   = false}
-    if (e[6].value.length != 11|| /^[a-z]+$/.test(e[4].value)){number    = true} else {number    = false}
+    if (e[6].value.length != 11|| /^[a-z]+$/.test(e[6].value)){number    = true} else {number    = false}
 
     setFormErrors({
       name        : name,

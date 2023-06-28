@@ -12,6 +12,7 @@ import { NotFound404 } from './Pages/404/NotFound404'
 import { Providers } from './Context/Context'
 import { CategoryPage } from './Pages/CategoryPage/CategoryPage'
 import { SubCategoryPage } from './Pages/SubCategoryPage/SubCategoryPage'
+import { Result } from './Pages/Result/Result'
 
 function App() {
 
@@ -30,7 +31,8 @@ function App() {
           <Route path='/Login'            Component={Login}             />
           <Route path='/AdminLogin'       Component={AdminLogin}        />
           <Route path='/Admin'            Component={AdminPage}         />
-          <Route path='/payment'          Component={PaymentPage}       />
+          <Route path='/Payment'          Component={PaymentPage}       />
+          <Route path='/Result/:result'   Component={Result}            />
           <Route path='*'                 Component={NotFound404}       />
         </Routes>
         
