@@ -37,8 +37,8 @@ export const SubCategoryPage = () => {
   return (
     <>
       <Header />
-      <Categories />
-      <div className='my-10 flex justify-center min-h-[51.2vh]'>
+
+      <div className='my-10 flex justify-center min-h-[58.3vh] mt-40'>
         <div className='h-fit border-l rounded-bl-md'>
         <ThemeProvider theme={theme}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>

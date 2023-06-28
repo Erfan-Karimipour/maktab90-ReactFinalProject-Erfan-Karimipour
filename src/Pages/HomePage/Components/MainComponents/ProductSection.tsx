@@ -41,7 +41,7 @@ export const  ProductSection = ({cat, subCat, limit}) => {
 
         {products.map((product) => (
           
-          <Link className='flex flex-col border h-full border-gray-200 items-center py-4 hover:shadow-xl duration-150 cursor-pointer m-auto hover:border hover:border-red-500' key={product._id} to={`/product/${product._id}`} >
+          <a className='flex flex-col border h-full border-gray-200 items-center py-4 hover:shadow-xl duration-150 cursor-pointer m-auto hover:border hover:border-red-500' key={product._id} href={`/product/${product._id}`} target='_blank' >
 
             <div className='h-[95%]'>
                 <img src={`http://localhost:8000/images/products/thumbnails/${product.thumbnail}`} alt={product.name} className='mb-4 p-8'/>
@@ -49,7 +49,7 @@ export const  ProductSection = ({cat, subCat, limit}) => {
             </div>
             <p className='font-bold my-5'>{product.price} تومان</p>
 
-          </Link>
+          </a>
 
 ))}
 

@@ -5,6 +5,7 @@ import { CartMaker } from './ShoppingCartComponents/CartMaker';
 import { useData } from '../../Context/Context';
 
 import EmptyCart from '../../assets/Images/EmptyCart.png'
+import { Link } from 'react-router-dom';
 
 export const ShoppingCartPage = () => {
 
@@ -49,9 +50,9 @@ export const ShoppingCartPage = () => {
               <p>مجموع قیمت</p>
               <span>{total}</span>
             </div>
-            <button className='font-bold text-white bg-green-500 mt-10 py-3 rounded-md'>
+            <Link to={'/Info'} className='font-bold text-white bg-green-500 mt-10 py-3 rounded-md w-full text-center hover:bg-green-600 duration-100'>
               نهایی کردن خرید
-            </button>
+            </Link>
 
         </div>  
       </div>
