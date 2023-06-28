@@ -1,21 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Header } from '../../Layout/Header'
 import { Footer } from '../../Layout/Footer'
 import { CartMaker } from './ShoppingCartComponents/CartMaker';
+import { useData } from '../../Context/Context';
+
+import EmptyCart from '../../assets/Images/EmptyCart.png'
 
 export const ShoppingCartPage = () => {
 
-  let carts = JSON.parse(localStorage.getItem(`Carts`));
+  let {updateList, setUpdateList} = useData();
+
+  
+  
+  let carts = JSON.parse(localStorage.getItem('Carts'));
+  if (!carts) carts = [];
   let total = 0;
   carts.map((cart) => {
     total += cart.quantity * cart.price;
   })
   
+  useEffect(() => {
+    carts = JSON.parse(localStorage.getItem('Carts'));
+  }, [updateList])
 
   return (
     <div>
       <Header />
-      <div className='mt-20 w-full px-[20%] flex justify-center gap-10'>
+      {carts.length > 0 ? 
+      <div className='mt-20 w-full px-[20%] flex justify-center gap-10 min-h-[67vh]'>
         <div className='border-gray-150 w-2/3'>
           <div className='flex items-end mr-2'>
             <p className='ml-2 text-3xl'>سبد خرید</p>
@@ -26,7 +38,7 @@ export const ShoppingCartPage = () => {
 
             {carts.map((cart) => (
               <CartMaker cart={cart} />
-            ))}
+              ))}
 
           </div>
         </div>
@@ -43,6 +55,14 @@ export const ShoppingCartPage = () => {
 
         </div>  
       </div>
+      : 
+      <div className='min-h-[75vh] flex justify-center items-center'>
+        <div>
+          <img src={EmptyCart} alt="Empty Cart" />
+          <p className='text-2xl font-bold w-full text-center'>سبد خرید شما خالی است!</p>
+        </div>
+      </div>
+      }
       <Footer />
     </div>
   )
