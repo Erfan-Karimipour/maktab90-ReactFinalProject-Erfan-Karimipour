@@ -2,11 +2,15 @@ import React, { useState } from 'react'
 import { Header } from '../../Layout/Header'
 import { Footer } from '../../Layout/Footer'
 import { Select, TextField, ThemeProvider, createTheme, MenuItem } from '@mui/material'
+import axios from 'axios'
+import { useData } from '../../Context/Context'
+import { Link } from 'react-router-dom'
 
-export const InfoPage = () => {
+export const Login = () => {
 
+  let {newOrder, setNewOrder} = useData();
+  
   const currentDate = new Date();
-
 
   const day1 = new Date(currentDate.getTime() + 3 * 24 * 60 * 60 * 1000);
   const day2 = new Date(currentDate.getTime() + 4 * 24 * 60 * 60 * 1000);
@@ -30,34 +34,45 @@ export const InfoPage = () => {
 
   let [formErrors, setFormErrors] = useState({
     name      : false,
-    familyName: false,
-    address   : false,
-    number    : false,
+    password  : false,
   })
 
   function validate(e){
     e.preventDefault();
     e = e.target.elements;
 
-    let name, familyName, address, number = false;
+    let name, password = false;
     
-    if (e[0].value.length < 2  || /\d/.test(e[0].value      )){name      = true} else {name      = false}
-    if (e[2].value.length < 2  || /\d/.test(e[2].value      )){familyName= true} else {familyName= false}
-    if (e[4].value.length < 10                               ){address   = true} else {address   = false}
-    if (e[6].value.length != 11|| /^[a-z]+$/.test(e[6].value)){number    = true} else {number    = false}
+    if (e[0].value.length < 2  || /\d/.test(e[0].value                                                 )){name      = true} else {name      = false}
+    if (e[2].value.length < 8 || e[2].value.length > 12 || !/[a-zA-Z]+[0-9]+/.test(e[2].value          )){password  = true} else {password  = false}
 
     setFormErrors({
       name        : name,
-      familyName  : familyName,
-      address     : address,
-      number      : number,
+      password    : password,
     });
 
-    if (!name && !familyName && !address && !number){
-      window.open(`/Payment`);
+    
+    if (!name && !password){
+      
+      let info = {
+        "username"    : e[0].value,
+        "password"    : e[2].value,
+      }
+
+      localStorage.setItem(`Order`, JSON.stringify(newOrder))
+      localStorage.setItem(`info`, JSON.stringify(info));
+
+      axios.post(`http://localhost:8000/api/auth/login`, info).then((res) => {
+        console.log(res.data.data.user._id);
+
+        console.log(newOrder); 
+        
+        window.open(`/Payment/${res.data.data.user._id}`);
+      }).catch((err) =>{
+        console.log(err);
+      });
     }
   }
-  
 
   const theme = createTheme({
     palette: {
@@ -80,19 +95,19 @@ export const InfoPage = () => {
     console.log(selectedOptions);
   }
 
+
   return (
     <div>
       <ThemeProvider theme={theme}>
 
         <Header />
-        <div className='mt-20 flex w-full'>
-          <form className='w-[30vw] m-auto border flex flex-col items-center shadow-lg mt-5' onSubmit={(e) => validate(e)}>
+        <div className='mt-20 flex w-full min-h-[42.3rem]'>
+          <form className='w-[30vw] m-auto border flex flex-col items-center shadow-lg mt-5 absolute top-[40%] left-[50%] translate-x-[-50%] translate-y-[-50%]' onSubmit={(e) => validate(e)}>
             <p className='text-2xl font-bold my-6 pb-6 text-center w-5/6 border-b mx-10'>نهایی کردن خرید</p>
+
             <TextField variant='outlined' helperText={formErrors.name && `لطفا نام خود را، صحیح وارد کنید`}                       error={formErrors.name}       label='نام' id='name' sx={{width: '25vw', margin: '0 0 20px 0'}}/>
-            <TextField variant='outlined' helperText={formErrors.familyName && `لطفا نام خانوادگی خود را، صحیح وارد کنید`}       error={formErrors.familyName} label='نام خانوادگی' id='familyName' sx={{width: '25vw', margin: '0 0 20px 0'}}/>
-            <TextField variant='outlined' helperText={formErrors.address && `لطفا آدرس کامل را وارد کنید`}                        error={formErrors.address}    label='آدرس' id='name' sx={{width: '25vw', margin: '0 0 20px 0'}}/>
-            <TextField variant='outlined' helperText={formErrors.number && `لطفا شماره تلفن ثابت خود را با کد استان وارد کنید`}  error={formErrors.number}     label='تلفن همراه' id='familyName' sx={{width: '25vw', margin: '0 0 20px 0'}} type='number'/>
-            <p className='self-start mr-10 mb-2'>زمان ارسال</p>
+            <TextField variant='outlined' helperText={formErrors.password && `کلمه عبور باید دارای حروف و اعداد بوده، و بین 8 تا 12 حرف باشد`}                 error={formErrors.password} label='کلمه عبور' id='password' sx={{width: '25vw', margin: '0 0 20px 0'}}/>
+
             <Select
               value={selectedOptions.date}
               displayEmpty
@@ -115,7 +130,11 @@ export const InfoPage = () => {
               <MenuItem value='melli' id='melli' sx={{backgroundColor: '#ffffff', border: '1px solid #c4c4c4', fontFamily: 'vazir'}} onClick={(e) => handleChangeMethod(e)}>ملی</MenuItem>
               <MenuItem value='saman' id='saman' sx={{backgroundColor: '#ffffff', border: '1px solid #c4c4c4', fontFamily: 'vazir'}} onClick={(e) => handleChangeMethod(e)}>سامان</MenuItem>
             </Select>
-            <button type='submit' className='text-xl bg-green-500 w-5/6 text-center py-2 text-white font-bold rounded-md mb-10'>پرداخت</button>
+
+            {/* <Link to={'/Payment'}> */}
+              <button type='submit' className='text-xl bg-green-500 w-5/6 text-center py-2 text-white font-bold rounded-md mb-5'>پرداخت</button>
+            {/* </Link> */}
+            <Link to={`/SignUp`} className='text-blue-500 mb-5'>حساب کاربری ندارید؟ ثبت نام کنید!</Link>
           </form>
         </div>
         <Footer />

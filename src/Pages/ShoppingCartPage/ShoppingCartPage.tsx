@@ -9,9 +9,7 @@ import { Link } from 'react-router-dom';
 
 export const ShoppingCartPage = () => {
 
-  let {updateList, setUpdateList} = useData();
-
-  
+  let {updateList, setUpdateList, newOrder, setNewOrder} = useData();
   
   let carts = JSON.parse(localStorage.getItem('Carts'));
   if (!carts) carts = [];
@@ -19,6 +17,17 @@ export const ShoppingCartPage = () => {
   carts.map((cart) => {
     total += cart.quantity * cart.price;
   })
+
+  let orderCarts = [];
+
+  carts.map((cart) => {
+    let newInfo = {
+      product: cart.id,
+      count  : cart.quantity,
+    }
+    orderCarts.push(newInfo)
+  })
+  
   
   useEffect(() => {
     carts = JSON.parse(localStorage.getItem('Carts'));
@@ -50,7 +59,7 @@ export const ShoppingCartPage = () => {
               <p>مجموع قیمت</p>
               <span>{total}</span>
             </div>
-            <Link to={'/Info'} className='font-bold text-white bg-green-500 mt-10 py-3 rounded-md w-full text-center hover:bg-green-600 duration-100' onClick={() => localStorage.setItem(`Price`, JSON.stringify(total))}>
+            <Link to={'/Login'} className='font-bold text-white bg-green-500 mt-10 py-3 rounded-md w-full text-center hover:bg-green-600 duration-100' onClick={() => {localStorage.setItem(`Price`, JSON.stringify(total)); setNewOrder({...newOrder, products: orderCarts})}}>
               نهایی کردن خرید
             </Link>
 
