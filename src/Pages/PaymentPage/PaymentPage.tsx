@@ -12,7 +12,6 @@ export const PaymentPage = () => {
   let info = JSON.parse(localStorage.getItem(`info`));
   let newOrder = JSON.parse(localStorage.getItem(`Order`));
   
-  
   useEffect(() => {
     axios.post(`http://localhost:8000/api/auth/login`, info).then((res) => {
       console.log(res.data.data.user._id);

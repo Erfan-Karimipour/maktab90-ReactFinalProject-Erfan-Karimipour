@@ -27,8 +27,8 @@ function App() {
           <Route path='/Product/:id'      Component={ProductPage}       />
           <Route path='/ShoppingCart'     Component={ShoppingCartPage}  />
           <Route path='/SignUp'           Component={SignUp}            />
-          <Route path='/Payment/:user'    Component={PaymentPage}       />
           <Route path='/Login'            Component={Login}             />
+          <Route path='/Payment/:user'    Component={PaymentPage}       />
           <Route path='/AdminLogin'       Component={AdminLogin}        />
           <Route path='/Admin'            Component={AdminPage}         />
           <Route path='/Payment'          Component={PaymentPage}       />

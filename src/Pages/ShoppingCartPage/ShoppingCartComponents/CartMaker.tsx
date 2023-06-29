@@ -40,7 +40,7 @@ export const CartMaker = ({cart}) => {
           <span>{cart.quantity}</span>
           <button className='bg-red-500 text-white w-6 rounded-tl-lg' onClick={() => {
             carts.map((FindCart) => {
-              if (FindCart.id == cart.id){
+              if (FindCart.id == cart.id && FindCart.quantity > 1){
                 FindCart.quantity -= 1;
                 setUpdateList(!updateList);
               }

@@ -25,7 +25,7 @@ export const ShoppingCartPage = () => {
       product: cart.id,
       count  : cart.quantity,
     }
-    orderCarts.push(newInfo)
+    orderCarts.push(newInfo);
   })
   
   

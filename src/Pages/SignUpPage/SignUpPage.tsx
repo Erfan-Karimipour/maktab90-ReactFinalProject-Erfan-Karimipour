@@ -75,11 +75,8 @@ export const SignUp = () => {
       }
 
       axios.post(`http://localhost:8000/api/auth/signup`, info).then((res) => {
-        console.log(res.data.data.user._id);
-        if (res.response.data.status == `success`){
-          setNewOrder({...newOrder, user: res.data.data.user._id})
-          window.open(`/Payment`);
-        }
+        setNewOrder({...newOrder, user: res.data.data.user._id})
+        window.open(`/ShoppingCart`);
       }).catch((err) => {
         setOpen(true)
         console.log(err.response.data);
@@ -144,7 +141,7 @@ export const SignUp = () => {
               <MenuItem value='saman' id='saman' sx={{backgroundColor: '#ffffff', border: '1px solid #c4c4c4', fontFamily: 'vazir'}} onClick={(e) => handleChangeMethod(e)}>سامان</MenuItem>
             </Select>
 
-            <TextField variant='outlined' helperText={formErrors.password && `کلمه عبور باید دارای حروف و اعداد بوده، و بین 8 تا 12 حرف باشد`}                 error={formErrors.password} label='کلمه عبور' id='password' sx={{width: '25vw', margin: '0 0 20px 0'}}/>
+            <TextField variant='outlined' helperText={formErrors.password && `کلمه عبور باید دارای حروف و اعداد بوده، و بین 8 تا 12 حرف باشد`} error={formErrors.password} label='کلمه عبور' id='password' sx={{width: '25vw', margin: '0 0 20px 0'}}/>
 
             <button type='submit' className='text-xl bg-green-500 w-5/6 text-center py-2 text-white font-bold rounded-md mb-5'>پرداخت</button>
             <Link to={`/Login`} className='text-blue-500 mb-5'>حساب کاربری دارید؟ وارد شوید!</Link>
