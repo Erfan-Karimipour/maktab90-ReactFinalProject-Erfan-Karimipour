@@ -11,6 +11,11 @@ export function Providers ({children}: {children: ReactNode}){
     let [open           , setOpen           ] = useState(false);
     let [updateList     , setUpdateList     ] = useState(false);
     let [selectedSubCat , setSelectedSubCat ] = useState({});
+    let [newOrder       , setNewOrder       ] = useState({
+        user            : ``,
+        products        : [],
+        deliveryStatus  : false,
+    });
     let [adminLoginError, setAdminLoginError] = useState({  
 
         userName: false,
@@ -25,7 +30,7 @@ export function Providers ({children}: {children: ReactNode}){
 
     
     return(
-        <Context.Provider value={{categories, setCategories, products, setProducts, error, setError, modal, setModal, adminLoginError, setAdminLoginError, open, setOpen, updateList, setUpdateList, selectedSubCat, setSelectedSubCat}}>
+        <Context.Provider value={{categories, setCategories, products, setProducts, error, setError, modal, setModal, adminLoginError, setAdminLoginError, open, setOpen, updateList, setUpdateList, selectedSubCat, setSelectedSubCat, newOrder, setNewOrder}}>
             {children}
         </Context.Provider>
     )

@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import axios from 'axios'
 import { useData } from '../../../../Context/Context'
+import { Link } from 'react-router-dom';
 
 export const Categories = () => {
   
@@ -24,17 +25,17 @@ export const Categories = () => {
               <img src={`http://localhost:8000/images/categories/icons/${category.icon}`} alt={category.name} className='w-20 h-20 bg-white border-2 border-red-500 rounded-full p-1'/>
               <div className='absolute top-[10.5rem] overflow-hidden h-[1.5rem] hover:h-60 z-10 bg-white duration-150 flex flex-col w-56 hover:shadow-2xl hover:border-l hover:border-r hover:border-b rounded-md'>
                 
-                <p className='rounded-md px-2 flex m-auto text-center' onClick={() => {
-                  window.open(`/category/${category._id}`)
-                }}>{category.name}</p>
+                <div className='rounded-md flex h-full duration-100'>
+                  <Link className='px-2 m-auto' to={`/category/${category._id}`}>{category.name}</Link>
+                </div>
 
                 <div>
                   {subCategories.map((subCat) => {
                     if(subCat.category == category._id){
                       return (
-                        <p className='py-2 px-2 border-t hover:bg-gray-100' onClick={() => {
-                          window.open(`/subcategory/${subCat._id}`);
-                        }}>{subCat.name}</p>
+                        <div className='border-t w-full flex hover:bg-gray-100'>
+                          <Link className='py-2 mx-auto w-full text-center' to={`/subcategory/${subCat._id}`}>{subCat.name}</Link>
+                        </div>
                       )
                     }
                   })}

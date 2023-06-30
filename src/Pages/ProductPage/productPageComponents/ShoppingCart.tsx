@@ -1,10 +1,15 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useData } from '../../../Context/Context';
+import { Snackbar } from '@mui/base';
+import { Alert } from '@mui/material';
 
 export const ShoppingCart = ({product}) => {
 
   let [similarProducts, setSimilarProducts] = useState({});
   let [quan           , setQuan           ] = useState(1);
+  let {open           ,setOpen            } = useData();
+  let newCart = true;
 
   useEffect(() => {
     axios.get(`http://localhost:8000/api/products?subcategory=${product.subcategory._id}`).then((res) => {
@@ -55,9 +60,50 @@ export const ShoppingCart = ({product}) => {
             </button>
             
           </div>
-          <button className='flex m-auto text-lg mb-5 font-bold bg-red-500 my-2 py-2 px-12 rounded-md text-white hover:bg-red-600 duration-100'>افزودن به سبد خرید</button>
+          <button className='flex m-auto text-lg mb-5 font-bold bg-red-500 my-2 py-2 px-12 rounded-md text-white hover:bg-red-600 duration-100' onClick={() => {
+            let carts = JSON.parse(localStorage.getItem(`Carts`));
+            if (!carts) carts = [];
+            let newCart = {
+              id        : product._id,
+              quantity  : quan,
+              price     : product.price,
+              name      : product.name,
+              thumbnail : product.thumbnail
+            }
+
+            //Checks if the cart already exists, and if it does, adds the new quantity to it instead of adding a new cart
+
+            carts.map((cart) => {
+              if (cart.id == product._id){
+                cart.quantity += quan;
+                newCart = cart;
+                newCart = false;
+              }
+            })
+
+            if (newCart) carts.push(newCart);
+
+            localStorage.setItem(`Carts`, JSON.stringify(carts));
+            setOpen(true);
+          }}>افزودن به سبد خرید</button>
+        </div>
+        <div className='fixed duration-150 mt-4 mr-14'>
+          <Snackbar
+            open={open}
+            autoHideDuration={2000}
+            onClose={() => {setOpen(false)}}
+            anchorOrigin={{vertical: 'top', horizontal: 'right'}}
+            >
+            <Alert severity='success' elevation={6} variant='standard'>
+              <p className='text-lg mr-2'>
+                محصول به سبد خرید اضافه شد
+              </p>
+            </Alert>
+          </Snackbar>
         </div>
       </div>
+
+
         
     </div>
   )
