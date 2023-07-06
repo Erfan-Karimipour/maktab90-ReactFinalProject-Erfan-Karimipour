@@ -6,6 +6,7 @@ import { StyledButton } from '@nextui-org/react';
 import { blue } from '@mui/material/colors';
 import { RadioInputs } from './OrdersTabComponents/RadioInputs';
 import { useData } from '../../../../Context/Context';
+import { formatNumber } from '../../../../modules/formatNumber';
 
 export function OrdersTab() {
 
@@ -62,32 +63,12 @@ export function OrdersTab() {
 
   const today = new Date();
 
-  let [namesAndPrices, setNamesAndPrices] = useState([])
+  let [namesAndPrices, setNamesAndPrices] = useState({
+    names: [],
+    prices: [],
+    temp  : 0,
+  })
   
-  function nameAndPriceGetter(prod) {
-    setNamesAndPrices([])
-    prod.products.map((product) => {
-      axios.get(`http://localhost:8000/api/products/${product.product}`).then((res) => {
-
-        let newData = {
-          name  : res.data.data.product.name,
-          price : res.data.data.product.price,
-        }
-        setNamesAndPrices([...namesAndPrices, newData]);
-
-        // product = {...product, name: res.data.data.product.name, price: res.data.data.product.price}
-
-        // console.log(namesAndPrices);
-        
-        // setNamesAndPrices(namesAndPrices.push(newData));     
-
-        
-      }).catch((err) => {
-        console.log(err);
-      })
-    })
-    
-  }
   
 
 
@@ -109,7 +90,7 @@ export function OrdersTab() {
             
           { field: 'totalPrice', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>مجموع مبلغ</p>, flex: 1, 
             renderCell: (params) => (
-            <p style={{ fontFamily: 'vazir' }} className='mr-5'>{params.value}</p>
+            <p style={{ fontFamily: 'vazir' }} className='mr-5'>{formatNumber(params.value)}</p>
           ),},
             
           { field: 'deliveryDate', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>زمان ثبت سفارش</p>, flex: 1, 
@@ -120,7 +101,34 @@ export function OrdersTab() {
           { field: 'id', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>اطلاعات بیشتر</p>, flex: 1, 
             renderCell: (params) => (
             <button className='mr-10 text-3xl bg-blue-500 rounded-full flex text-white' onClick={() => {
-              nameAndPriceGetter(params.row);
+
+
+                
+                
+              const promises = params.row.products.map((item) => {
+                return axios.get(`http://localhost:8000/api/products/${item.product}`);
+              });
+              
+              Promise.all(promises).then((results) => {
+                const names = [];
+                const prices = [];
+              
+                results.forEach((res) => {
+                  const name = res.data.data.product.name;
+                  const price = res.data.data.product.price;
+                  names.push(name);
+                  prices.push(price);
+                });
+              
+                setNamesAndPrices({
+                  names: names,
+                  prices: prices,
+                  temp: namesAndPrices.temp + 1,
+                });
+              }).catch((err) => {
+                console.log(err);
+              });
+
               setModal(params.row);
             }}>
               <ion-icon name="alert-circle-outline"></ion-icon>
@@ -144,7 +152,12 @@ export function OrdersTab() {
       {modal &&
       <div className='top-0 bottom-0 left-0 right-0 absolute flex z-10 bg-black bg-opacity-25'>
         <div className='bg-white w-1/3 flex h-fit m-auto self-center flex-col rounded-md p-5'>
-          <button className='text-white bg-red-500 rounded-full flex w-fit text-2xl' onClick={() => {setModal(``); }}>
+          <button className='text-white bg-red-500 rounded-full flex w-fit text-2xl' onClick={() => {setModal(``); setNamesAndPrices({
+                  names: [],
+                  prices:[],
+                  temp  : 0,
+                }) 
+              }}>
             <ion-icon name="close-circle-outline"></ion-icon>
           </button>
           <p className='w-full text-center text-3xl pb-3 border-b'>اطلاعات</p>
@@ -174,32 +187,26 @@ export function OrdersTab() {
             <p>{modal.createdAt}</p>
           </div>
           
-          <div className='w-full h-96 overflow-y-scroll px-3 mt-4'>
+          <div className='w-full h-96 overflow-y-scroll px-3 mt-4 text-center'>
             <table className='w-full'>
               <thead>
                 <tr className='border-b'>
-                  <td className='w-2/3 border'>کالا</td>
-                  <td className='w-1/6 border'>قیمت</td>
-                  <td className='w-1/6 border'>تعداد</td>
+                  <td className='w-2/3 border-2'>کالا</td>
+                  <td className='w-1/6 border-2'>قیمت</td>
+                  <td className='w-1/6 border-2'>تعداد</td>
                 </tr>
               </thead>
                 {
                   modal.products.map((product, index) => {
-
-                    if(namesAndPrices.length >= 1){
-
-                      console.log(product);
-                      
-                      return(
-                        <tr className='border-b'>
-                        <td className='w-2/3 border'>{namesAndPrices[index].name}</td>
-                        <td className='w-1/6 border'>{namesAndPrices[index].price}</td>
+                    
+                    return(
+                      <tr className='border-b text-sm'>
+                        <td className='w-2/3 border text-start'>{namesAndPrices.names[index] || namesAndPrices.temp}</td>
+                        <td className='w-1/6 border'>{formatNumber(namesAndPrices.prices[index]|| namesAndPrices.temp)}</td>
                         <td className='w-1/6 border'>{product.count}</td>
                       </tr>
                     )
-                    
-                  }
-                    
+
                   })
                 }
             </table>

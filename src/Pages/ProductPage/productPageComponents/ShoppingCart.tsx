@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { useData } from '../../../Context/Context';
 import { Snackbar } from '@mui/base';
 import { Alert } from '@mui/material';
+import { formatNumber } from '../../../modules/formatNumber';
 
 export const ShoppingCart = ({product}) => {
 
   let [similarProducts, setSimilarProducts] = useState({});
   let [quan           , setQuan           ] = useState(1);
-  let {open           ,setOpen            } = useData();
+  let {open ,setOpen, badge, setBadge     } = useData();
   let newCart = true;
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export const ShoppingCart = ({product}) => {
           <p>قیمت فروشنده</p>
           <span className='text-xl items-center flex mt-3'>
             <ion-icon name="cash-outline" class="ml-2 mb-1"></ion-icon>
-            {product.price}
+            {formatNumber(product.price)}
             <p className='mr-1'>تومان</p>
           </span>
         </div>
@@ -80,9 +81,10 @@ export const ShoppingCart = ({product}) => {
                 newCart = false;
               }
             })
-
+            if (newCart != false){
+              setBadge(badge + 1);
+            }
             if (newCart) carts.push(newCart);
-
             localStorage.setItem(`Carts`, JSON.stringify(carts));
             setOpen(true);
           }}>افزودن به سبد خرید</button>

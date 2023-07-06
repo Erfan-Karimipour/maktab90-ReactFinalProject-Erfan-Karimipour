@@ -4,6 +4,14 @@ import axios from 'axios'
 let Context = createContext({});
 
 export function Providers ({children}: {children: ReactNode}){
+    let cartAmount = JSON.parse(localStorage.getItem('Carts'));
+    if (!cartAmount){
+        cartAmount = 0
+    } else {
+        cartAmount = cartAmount.length;
+    };
+
+
     let [categories     , setCategories     ] = useState([]);
     let [products       , setProducts       ] = useState([]);
     let [error          , setError          ] = useState(false);
@@ -11,6 +19,7 @@ export function Providers ({children}: {children: ReactNode}){
     let [open           , setOpen           ] = useState(false);
     let [updateList     , setUpdateList     ] = useState(false);
     let [selectedSubCat , setSelectedSubCat ] = useState({});
+    let [badge          , setBadge          ] = useState(cartAmount)
     let [newOrder       , setNewOrder       ] = useState({
         user            : ``,
         products        : [],
@@ -30,7 +39,7 @@ export function Providers ({children}: {children: ReactNode}){
 
     
     return(
-        <Context.Provider value={{categories, setCategories, products, setProducts, error, setError, modal, setModal, adminLoginError, setAdminLoginError, open, setOpen, updateList, setUpdateList, selectedSubCat, setSelectedSubCat, newOrder, setNewOrder}}>
+        <Context.Provider value={{categories, setCategories, products, setProducts, error, setError, modal, setModal, adminLoginError, setAdminLoginError, open, setOpen, updateList, setUpdateList, selectedSubCat, setSelectedSubCat, newOrder, setNewOrder, badge, setBadge}}>
             {children}
         </Context.Provider>
     )

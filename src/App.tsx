@@ -31,7 +31,6 @@ function App() {
           <Route path='/Payment/:user'    Component={PaymentPage}       />
           <Route path='/AdminLogin'       Component={AdminLogin}        />
           <Route path='/Admin'            Component={AdminPage}         />
-          <Route path='/Payment'          Component={PaymentPage}       />
           <Route path='/Result/:result'   Component={Result}            />
           <Route path='*'                 Component={NotFound404}       />
         </Routes>
