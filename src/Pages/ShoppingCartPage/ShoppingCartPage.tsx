@@ -6,6 +6,7 @@ import { useData } from '../../Context/Context';
 
 import EmptyCart from '../../assets/Images/EmptyCart.png'
 import { Link } from 'react-router-dom';
+import { formatNumber } from '../../modules/formatNumber';
 
 export const ShoppingCartPage = () => {
 
@@ -57,7 +58,10 @@ export const ShoppingCartPage = () => {
 
             <div className='flex justify-between w-full text-lg border-b pb-5'>
               <p>مجموع قیمت</p>
-              <span>{total}</span>
+              <div className='flex gap-2'>
+                <span>{formatNumber(total)}</span>
+                <p>تومان</p>
+              </div>
             </div>
             <Link to={'/Login'} className='font-bold text-white bg-green-500 mt-10 py-3 rounded-md w-full text-center hover:bg-green-600 duration-100' onClick={() => {localStorage.setItem(`Price`, JSON.stringify(total)); setNewOrder({...newOrder, products: orderCarts})}}>
               نهایی کردن خرید

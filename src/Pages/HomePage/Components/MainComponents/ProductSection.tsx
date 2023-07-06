@@ -3,6 +3,7 @@ import { useData } from '../../../../Context/Context';
 import axios from 'axios';
 import { Pagination, Stack, ThemeProvider, createTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { formatNumber } from '../../../../modules/formatNumber';
 
 export const  ProductSection = ({cat, subCat, limit}) => {
   let {products, setProducts, selectedSubCat  } = useData();
@@ -47,7 +48,7 @@ export const  ProductSection = ({cat, subCat, limit}) => {
                 <img src={`http://localhost:8000/images/products/thumbnails/${product.thumbnail}`} alt={product.name} className='mb-4 p-8'/>
                 <p className='mx-4 overflow-hidden text-ellipsis productName'>{product.name}</p>
             </div>
-            <p className='font-bold my-5'>{product.price} تومان</p>
+            <p className='font-bold my-5'>{formatNumber(product.price) } تومان</p>
 
           </a>
 

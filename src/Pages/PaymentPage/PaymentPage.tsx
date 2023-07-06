@@ -3,21 +3,17 @@ import BG from '../../assets/Images/PaymentBG.jpg'
 import { Link, useParams } from 'react-router-dom';
 import { useData } from '../../Context/Context';
 import axios from 'axios';
+import { formatNumber } from '../../modules/formatNumber';
 
 export const PaymentPage = () => {
 
   let { user } = useParams<{user: string}>();
+  let {badge, setBadge} = useData()
 
   let total = JSON.parse(localStorage.getItem(`Price`));
   let info = JSON.parse(localStorage.getItem(`info`));
   let newOrder = JSON.parse(localStorage.getItem(`Order`));
-  
-  useEffect(() => {
-    axios.post(`http://localhost:8000/api/auth/login`, info).then((res) => {
-      console.log(res.data.data.user._id);
-      newOrder = {...newOrder, user: res.data.data.user._id};
-    })
-  }, [])
+  newOrder = {...newOrder, user: user};
   
   
   return (
@@ -28,16 +24,15 @@ export const PaymentPage = () => {
             axios.post(`http://localhost:8000/api/orders`, newOrder).then((res) => {
               window.open(`/Result/success`, '_self');
               localStorage.removeItem(`Carts`);
+              setBadge(0);
             }).catch((err) => {
               console.log(err);
-              
-              // window.open(`/Result/failed`, '_self');
             })
           }}>پرداخت</button>
           <Link className='text-2xl text-white bg-yellow-300 h-fit px-12 py-4 mt-2 mr-2 rounded-full'      to={`/Result/failed`}>انصراف</Link>
         </div>
         <span className='text-4xl text-green-500 bg-white font-bold ml-28 pl-4 mt-5'>
-          {total}
+          {formatNumber(total)}
         </span>
       </div>
     </div>

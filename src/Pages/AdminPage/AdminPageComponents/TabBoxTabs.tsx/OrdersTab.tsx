@@ -74,14 +74,7 @@ export function OrdersTab() {
           price : res.data.data.product.price,
         }
         setNamesAndPrices([...namesAndPrices, newData]);
-
-        // product = {...product, name: res.data.data.product.name, price: res.data.data.product.price}
-
-        // console.log(namesAndPrices);
-        
-        // setNamesAndPrices(namesAndPrices.push(newData));     
-
-        
+          
       }).catch((err) => {
         console.log(err);
       })

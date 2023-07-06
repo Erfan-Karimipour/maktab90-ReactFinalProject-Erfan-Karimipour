@@ -37,7 +37,6 @@ export function ProductsTab() {
       .then((res) => {
         const products = res.data.data.products;
         const total = res.data.total;
-        
         setRows(products);
         setRowCount(total);
         setLoading(false);
