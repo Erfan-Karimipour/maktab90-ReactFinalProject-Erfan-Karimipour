@@ -6,6 +6,7 @@ import { StyledButton } from '@nextui-org/react';
 import { blue } from '@mui/material/colors';
 import { HandleEditRows } from '../../../../modules/handleEditRows';
 import { useData } from '../../../../Context/Context';
+import { formatNumber } from '../../../../modules/formatNumber';
 
 export function QuantityTab() {
 
@@ -91,7 +92,7 @@ export function QuantityTab() {
               
               { field: 'price', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>قیمت</p>, flex: 1, editable: true, 
               renderCell: (params) => (
-                <p style={{ fontFamily: 'vazir' }}>{params.value}</p>
+                <p style={{ fontFamily: 'vazir' }}>{formatNumber(params.value)}</p>
                 ),},
                 
                 { field: 'quantity', headerName: <p className='text-xl' style={{fontFamily: 'vazir'}}>موجودی</p>, flex: 1, editable: true,
